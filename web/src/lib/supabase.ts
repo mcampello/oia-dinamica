@@ -5,6 +5,7 @@ export type Turma = {
   nome: string;
   codigo: string;
   ativa: boolean;
+  marca: string;
   created_at: string;
 };
 

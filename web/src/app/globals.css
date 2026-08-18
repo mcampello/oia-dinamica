@@ -25,6 +25,12 @@
   gap: 16px;
 }
 .logo { height: 24px; display: block; }
+[data-marca="tera"] .logo {
+  width: 72px;
+  object-fit: cover;
+  object-position: center;
+  mix-blend-mode: screen;
+}
 .topo-direita { display: flex; align-items: center; gap: 16px; }
 
 .miolo {
@@ -86,7 +92,7 @@
 .campo textarea::placeholder { color: rgba(255,255,255,0.30); }
 .campo textarea { resize: vertical; min-height: 56px; }
 .campo select { appearance: none; cursor: pointer; }
-.campo select option { background: #141215; }
+.campo select option { background: var(--surface-menu); }
 .campo .ajuda { font-size: var(--text-meta); color: var(--on-dark-3); }
 
 .input-codigo {
@@ -119,7 +125,7 @@
   align-items: center;
   gap: 8px;
   background: var(--pd-purple);
-  color: #fff;
+  color: var(--on-accent);
   border: none;
   border-radius: var(--radius-pill);
   padding: 9px 18px;
@@ -174,7 +180,7 @@ a.btn-roxo, a.btn-fio-escuro { text-decoration: none; }
 .bloco {
   border: 1px solid var(--hairline);
   border-radius: var(--radius-soft);
-  background: rgba(255,255,255,0.04);
+  background: var(--fill-block);
   padding: 18px;
   display: flex;
   flex-direction: column;
@@ -184,7 +190,7 @@ a.btn-roxo, a.btn-fio-escuro { text-decoration: none; }
 .bloco .docs { font-size: var(--text-meta); color: var(--on-dark-3); flex: 1; }
 .bloco-acao { padding-top: var(--gap-2); }
 a.bloco-link { text-decoration: none; color: inherit; }
-a.bloco-link:hover { border-color: var(--pd-lilac); background: rgba(255,255,255,0.06); }
+a.bloco-link:hover { border-color: var(--pd-lilac); background: var(--fill-block-hover); }
 a.bloco-link:hover .btn-baixar { border-color: var(--pd-lilac); color: #fff; }
 a.bloco-link:focus-visible {
   outline: 2px solid var(--pd-lilac);
@@ -195,7 +201,7 @@ a.bloco-link:focus-visible {
 .bloco-envio {
   border: 1px solid var(--hairline);
   border-radius: var(--radius-soft);
-  background: rgba(255,255,255,0.04);
+  background: var(--fill-block);
   padding: 22px;
 }
 .form-envio { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; }

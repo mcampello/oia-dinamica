@@ -4,6 +4,7 @@ import { enviarResultado } from "@/app/turma/actions";
 import { db } from "@/lib/supabase";
 import { sessaoTurma } from "@/lib/session";
 import { CANDIDATOS, GRUPOS, isNumeroGrupo } from "@/lib/grupos";
+import { obterMarca } from "@/lib/marcas";
 import {
   DICAS_PROMPT,
   ENTREGA,
@@ -37,21 +38,22 @@ export default async function PaginaGrupo({
 
   const { data: turma } = await db()
     .from("turmas")
-    .select("id")
+    .select("id, marca")
     .eq("id", turmaId)
     .eq("ativa", true)
     .maybeSingle();
   if (!turma) redirect("/");
+  const marca = obterMarca(turma.marca);
 
   const g = GRUPOS[numero];
   const guia = GUIAS[numero];
   const { enviado, erro } = await searchParams;
 
   return (
-    <div className="pagina-escura">
+    <div className="pagina-escura" data-marca={marca.slug}>
       <header className="topo">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/logo_dark.svg" alt="Pandora" className="logo" />
+        <img src={marca.logo} alt={marca.nome} className="logo" />
         <Link href="/turma" className="btn-fio-escuro">
           ← Voltar
         </Link>
@@ -245,7 +247,7 @@ export default async function PaginaGrupo({
       </main>
 
       <footer className="pd-rule rodape">
-        <span>©2026 Pandora</span>
+        <span>©2026 {marca.nome}</span>
         <span>Vértice Serviços Gerenciados S.A. — caso fictício</span>
       </footer>
     </div>

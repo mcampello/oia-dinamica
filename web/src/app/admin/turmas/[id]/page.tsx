@@ -6,6 +6,7 @@ import { CANDIDATOS, GRUPOS, NUMEROS_GRUPO } from "@/lib/grupos";
 import { montarPromptCruzamento, vigentes } from "@/lib/cruzamento";
 import { dataHora } from "@/lib/data";
 import BotaoCopiar from "@/components/BotaoCopiar";
+import { obterMarca } from "@/lib/marcas";
 
 export const dynamic = "force-dynamic";
 
@@ -42,7 +43,7 @@ export default async function DetalheTurma({
           <span className="papel-titulo">{turma.nome}</span>
           <span className="papel-chip">
             código <code style={{ color: "var(--pd-purple)" }}>{turma.codigo}</code> ·{" "}
-            {turma.ativa ? "ativa" : "encerrada"}
+            {obterMarca(turma.marca).nome} · {turma.ativa ? "ativa" : "encerrada"}
           </span>
         </div>
         <Link href="/admin" className="btn-fio" style={{ textDecoration: "none" }}>
