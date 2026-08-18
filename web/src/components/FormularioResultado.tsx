@@ -22,7 +22,7 @@ type Props = {
 };
 
 const MENSAGENS_ERRO = {
-  campos: "Preencha todos os campos — inclusive o prompt.",
+  campos: "Preencha todos os campos — inclusive o racional da decisão.",
   limite: "Um ou mais campos passaram do limite. Revise os contadores.",
   fechados: "Os envios foram fechados pelo facilitador. Seu texto foi preservado.",
   envio: "Não foi possível gravar. Seu texto foi preservado; tente de novo.",
@@ -48,9 +48,9 @@ export default function FormularioResultado({ grupo, envioAtual, enviosAbertos }
         motivo: envioAtual.motivo,
         dado: envioAtual.dado,
         faltou: envioAtual.faltou,
-        prompt: envioAtual.prompt,
+        racional: envioAtual.racional,
       }
-    : { candidato: "", motivo: "", dado: "", faltou: "", prompt: "" };
+    : { candidato: "", motivo: "", dado: "", faltou: "", racional: "" };
   const [estado, acao] = useActionState(enviarResultado, estadoInicialResultado(valoresIniciais));
   const [valores, setValores] = useState(valoresIniciais);
   const [sujo, setSujo] = useState(false);
@@ -147,7 +147,7 @@ export default function FormularioResultado({ grupo, envioAtual, enviosAbertos }
       motivo: envioAtual.motivo,
       dado: envioAtual.dado,
       faltou: envioAtual.faltou,
-      prompt: envioAtual.prompt,
+      racional: envioAtual.racional,
     });
     setEnvioCarregado({ id: envioAtual.id, criadoEm: envioAtual.created_at });
   }, [envioAtual, envioCarregado.criadoEm, sujo]);
@@ -230,8 +230,8 @@ export default function FormularioResultado({ grupo, envioAtual, enviosAbertos }
 
             <CampoTexto
               id="motivo"
-              label="Motivo"
-              placeholder="Em até três linhas."
+              label="Resumo da recomendação"
+              placeholder="Qualifiquem os três candidatos e resumam por que escolheram o indicado."
               valor={valores.motivo}
               maximo={LIMITES_RESULTADO.motivo}
               somenteLeitura={!enviosAbertos}
@@ -248,22 +248,22 @@ export default function FormularioResultado({ grupo, envioAtual, enviosAbertos }
             />
             <CampoTexto
               id="faltou"
-              label="O que ficou faltando"
-              placeholder="Que informação vocês gostariam de ter e não têm."
+              label="Perguntas que ficaram abertas"
+              placeholder="O que a conversa revelou e que os documentos não permitem responder?"
               valor={valores.faltou}
               maximo={LIMITES_RESULTADO.faltou}
               somenteLeitura={!enviosAbertos}
               onChange={(valor) => alterar("faltou", valor)}
             />
             <CampoTexto
-              id="prompt"
-              label="O prompt que vocês usaram"
-              placeholder="Cole o prompt inteiro. Ele entra no fechamento — sem prompt, não vale."
-              valor={valores.prompt}
-              maximo={LIMITES_RESULTADO.prompt}
+              id="racional"
+              label="Racional da decisão"
+              placeholder="Como vocês ponderaram os critérios, as tensões e as condições da escolha?"
+              valor={valores.racional}
+              maximo={LIMITES_RESULTADO.racional}
               somenteLeitura={!enviosAbertos}
               alto
-              onChange={(valor) => alterar("prompt", valor)}
+              onChange={(valor) => alterar("racional", valor)}
             />
           </div>
 
@@ -287,7 +287,7 @@ function CampoTexto({
   alto = false,
   onChange,
 }: {
-  id: "motivo" | "dado" | "faltou" | "prompt";
+  id: "motivo" | "dado" | "faltou" | "racional";
   label: string;
   placeholder: string;
   valor: string;

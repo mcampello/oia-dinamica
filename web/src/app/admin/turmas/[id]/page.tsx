@@ -80,7 +80,11 @@ export default async function DetalheTurma({
         </section>
 
         <section className="bloco-roxo sobe">
-          <h3>Cruzamento no Claude</h3>
+          <h3>Kit do agente de alinhamento</h3>
+          <p>
+            O agente final recebe três camadas: os fatos dos currículos, as regras estratégicas
+            do Comitê e as respostas dos grupos, que já entram dentro do prompt gerado abaixo.
+          </p>
           <ol
             style={{
               display: "flex",
@@ -91,34 +95,73 @@ export default async function DetalheTurma({
             }}
           >
             <li>
-              <strong>Monte o projeto (uma vez).</strong> Baixe as regras da Vértice e
-              adicione o arquivo ao projeto no Claude.
-              <div style={{ marginTop: 8 }}>
+              <strong>Conhecimento do agente.</strong> Crie um projeto no agente que fará o
+              fechamento e adicione estes cinco arquivos uma única vez:
+              <div className="acoes-turma" style={{ marginTop: 8, justifyContent: "flex-start" }}>
                 <a
-                  href="https://raw.githubusercontent.com/mcampello/oia-dinamica/main/Facilitador%20(n%C3%A3o%20distribuir)/Regras-e-Estrategia-da-Vertice.md"
+                  href="/downloads/Descritivo-da-vaga-Head-de-Automacao-e-IA.md"
+                  download
+                  className="pd-btn"
+                  style={{ color: "#000", textDecoration: "none" }}
+                >
+                  Descritivo da vaga
+                </a>
+                <a
+                  href="/downloads/Curriculo-1-Rafael-DAvila.md"
+                  download
+                  className="pd-btn"
+                  style={{ color: "#000", textDecoration: "none" }}
+                >
+                  Currículo 1 — Rafael
+                </a>
+                <a
+                  href="/downloads/Curriculo-2-Aline-Ferraz.md"
+                  download
+                  className="pd-btn"
+                  style={{ color: "#000", textDecoration: "none" }}
+                >
+                  Currículo 2 — Aline
+                </a>
+                <a
+                  href="/downloads/Curriculo-3-Juliana-Setubal.md"
+                  download
+                  className="pd-btn"
+                  style={{ color: "#000", textDecoration: "none" }}
+                >
+                  Currículo 3 — Juliana
+                </a>
+                <a
+                  href="/downloads/Regras-e-Estrategia-da-Vertice.md"
                   target="_blank"
                   rel="noreferrer"
                   className="pd-btn"
                   style={{ color: "#000", textDecoration: "none" }}
                 >
-                  Abrir regras da Vértice
+                  Abrir regras e estratégia
                 </a>
               </div>
             </li>
             <li>
-              <strong>Depois dos envios.</strong> Copie o prompt de cruzamento. Ele já
-              inclui a resposta vigente dos quatro grupos.
+              <strong>Contexto dos grupos.</strong> Não é preciso copiar resposta por resposta.
+              O sistema seleciona o envio mais recente de cada grupo e coloca os quatro dentro
+              do prompt de alinhamento.
+            </li>
+            <li>
+              <strong>Prompt de alinhamento.</strong> Depois que os quatro grupos enviarem,
+              copie o prompt abaixo. A primeira resposta do agente será somente uma pergunta;
+              ele fica proibido de mostrar análise ou candidatos favoritos.
               <div style={{ marginTop: 8 }}>
                 <BotaoCopiar
                   texto={promptCruzamento}
-                  rotulo="Copiar prompt de cruzamento"
+                  rotulo="Copiar prompt de alinhamento"
                   className="pd-btn"
                 />
               </div>
             </li>
             <li>
-              <strong>Faça o cruzamento.</strong> Cole o prompt no projeto e rode com a
-              resposta projetada para a turma.
+              <strong>Libere cada rodada.</strong> Responda às perguntas e escreva
+              <code> PODE MAPEAR</code> para ver alternativas sem recomendação. Quando a turma
+              estiver pronta, escreva <code>PODE RECOMENDAR</code> para produzir o fechamento.
             </li>
           </ol>
           {gruposSemEnvio.length > 0 && (
@@ -162,7 +205,7 @@ export default async function DetalheTurma({
                       </span>
                     </div>
                     <div className="resposta-campo">
-                      <span className="rotulo">Motivo</span>
+                      <span className="rotulo">Resumo da recomendação</span>
                       <span className="valor">{e.motivo}</span>
                     </div>
                     <div className="resposta-campo">
@@ -170,10 +213,15 @@ export default async function DetalheTurma({
                       <span className="valor">{e.dado}</span>
                     </div>
                     <div className="resposta-campo">
-                      <span className="rotulo">O que ficou faltando</span>
+                      <span className="rotulo">Perguntas que ficaram abertas</span>
                       <span className="valor">{e.faltou}</span>
                     </div>
-                    <div className="resposta-prompt">{e.prompt}</div>
+                    <div className="resposta-campo resposta-racional">
+                      <span className="rotulo">Racional da decisão</span>
+                      <span className="valor">
+                        {e.racional || "Não informado — peça ao grupo para reenviar o resultado."}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>

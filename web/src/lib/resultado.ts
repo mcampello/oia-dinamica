@@ -4,7 +4,7 @@ export const LIMITES_RESULTADO = {
   motivo: 2000,
   dado: 2000,
   faltou: 2000,
-  prompt: 8000,
+  racional: 8000,
 } as const;
 
 export type ValoresResultado = {
@@ -12,7 +12,7 @@ export type ValoresResultado = {
   motivo: string;
   dado: string;
   faltou: string;
-  prompt: string;
+  racional: string;
 };
 
 export type ErroResultado = "campos" | "limite" | "fechados" | "envio";
@@ -30,7 +30,7 @@ export const VALORES_RESULTADO_VAZIOS: ValoresResultado = {
   motivo: "",
   dado: "",
   faltou: "",
-  prompt: "",
+  racional: "",
 };
 
 export function lerValoresResultado(formData: Pick<FormData, "get">): ValoresResultado {
@@ -39,7 +39,7 @@ export function lerValoresResultado(formData: Pick<FormData, "get">): ValoresRes
     motivo: String(formData.get("motivo") ?? ""),
     dado: String(formData.get("dado") ?? ""),
     faltou: String(formData.get("faltou") ?? ""),
-    prompt: String(formData.get("prompt") ?? ""),
+    racional: String(formData.get("racional") ?? ""),
   };
 }
 
@@ -49,14 +49,14 @@ export function validarValoresResultado(valores: ValoresResultado): ErroResultad
     valores.motivo.trim() &&
     valores.dado.trim() &&
     valores.faltou.trim() &&
-    valores.prompt.trim();
+    valores.racional.trim();
   if (!preenchido) return "campos";
 
   if (
     valores.motivo.length > LIMITES_RESULTADO.motivo ||
     valores.dado.length > LIMITES_RESULTADO.dado ||
     valores.faltou.length > LIMITES_RESULTADO.faltou ||
-    valores.prompt.length > LIMITES_RESULTADO.prompt
+    valores.racional.length > LIMITES_RESULTADO.racional
   ) {
     return "limite";
   }

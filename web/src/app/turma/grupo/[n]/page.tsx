@@ -8,10 +8,9 @@ import { sessaoTurma } from "@/lib/session";
 import { GRUPOS, isNumeroGrupo } from "@/lib/grupos";
 import { obterMarca } from "@/lib/marcas";
 import {
-  DICAS_PROMPT,
   ENTREGA,
   GUIAS,
-  PASSOS,
+  PREPARACAO_PROJETO,
   REGRAS_GUIA,
   SITUACAO,
   TEMPO,
@@ -33,9 +32,9 @@ const SETA_DIREITA = (
 
 const ETAPAS = [
   { id: "situacao", titulo: "Entenda a situação" },
-  { id: "material", titulo: "Baixe o material" },
-  { id: "ia", titulo: "Converse com a IA" },
-  { id: "envio", titulo: "Decidam e enviem" },
+  { id: "material", titulo: "Baixe a base da área" },
+  { id: "projeto", titulo: "Prepare o projeto" },
+  { id: "comparacao", titulo: "Compare e envie" },
 ];
 
 export default async function PaginaGrupo({
@@ -103,7 +102,7 @@ export default async function PaginaGrupo({
               </div>
 
               <div>
-                <h2>Baixe o material</h2>
+                <h2>Baixe a base da sua área</h2>
                 <div className="tabela">
                   <div className="th cols-docs">
                     <span>Arquivo</span>
@@ -112,44 +111,48 @@ export default async function PaginaGrupo({
                   {guia.docs.map((doc) => (
                     <div className="tr cols-docs" key={doc.arquivo}>
                       <code className="arquivo-doc">{doc.arquivo}</code>
-                      <span>
-                        {doc.descricao}
-                        {doc.igualParaTodos && (
-                          <span className="meta"> Igual para todos os grupos.</span>
-                        )}
-                      </span>
+                      <span>{doc.descricao}</span>
                     </div>
                   ))}
                 </div>
                 <p className="meta">
-                  Esses documentos são a base de conhecimento da sua área. O que precisarem
-                  concluir terá de sair deles.
+                  Este ZIP tem os 4 documentos que representam o conhecimento da sua área,
+                  incluindo seus objetivos estratégicos.
+                  Eles serão usados para avaliar a vaga e os currículos baixados na Home.
                 </p>
                 <a className="btn-baixar" href={`/downloads/${g.zip}`} download>
-                  Baixar material (.zip) {SETA_BAIXO}
+                  Baixar base da área (.zip) {SETA_BAIXO}
                 </a>
               </div>
 
               <div>
-                <h2>Converse com a IA</h2>
+                <h2>Prepare o projeto</h2>
                 <ol className="regras">
-                  {PASSOS.map((passo) => (
+                  {PREPARACAO_PROJETO.map((passo) => (
                     <li key={passo}>{passo}</li>
                   ))}
                 </ol>
-                <ul className="dicas-guia">
-                  {DICAS_PROMPT.map((dica) => (
-                    <li key={dica}>{dica}</li>
-                  ))}
-                </ul>
-                <p className="meta">O prompt é de vocês — não existe roteiro pronto.</p>
               </div>
 
               <div>
-                <h2>Decidam e enviem</h2>
+                <h2>Compare e enviem</h2>
                 <p>
-                  Escolham um dos três candidatos e digam por quê. Se concluírem que nenhum
-                  deve ser contratado agora, expliquem o encaminhamento.
+                  O projeto agora reúne o descritivo da vaga, os currículos e o conhecimento
+                  disponível para a sua área. O desafio do grupo é descobrir como cruzar essas
+                  informações para avaliar os candidatos e tomar uma decisão.
+                </p>
+                <p className="aviso">
+                  Não existe prompt pronto nem sequência obrigatória. O que perguntar, quais
+                  critérios usar e como conduzir a análise fazem parte do exercício.
+                </p>
+                <p className="meta">
+                  A IA conhece somente o que está nos oito arquivos. Se faltar contexto,
+                  identifiquem a lacuna em vez de inventar uma resposta.
+                </p>
+                <p>
+                  Qualifiquem os três candidatos, escolham quem deve ser contratado e resumam
+                  o porquê. Se concluírem que ninguém deve ser aprovado agora, expliquem o
+                  encaminhamento.
                 </p>
                 <div className="tabela">
                   <div className="th cols-docs">
