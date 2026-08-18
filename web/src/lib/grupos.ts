@@ -32,6 +32,10 @@ export const GRUPOS: Record<
 
 export const NUMEROS_GRUPO: NumeroGrupo[] = [1, 2, 3, 4];
 
+export function isNumeroGrupo(numero: number): numero is NumeroGrupo {
+  return NUMEROS_GRUPO.includes(numero as NumeroGrupo);
+}
+
 export const CANDIDATOS: Record<string, string> = {
   rafael: "Rafael D'Ávila",
   aline: "Aline Ferraz",
