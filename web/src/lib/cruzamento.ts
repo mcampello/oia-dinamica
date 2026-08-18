@@ -40,7 +40,7 @@ export function montarPromptCruzamento(envios: Envio[]): {
       `O dado que sustenta: ${envio.dado}`,
       `Perguntas que ficaram abertas: ${envio.faltou}`,
       `Racional da decisão:`,
-      envio.racional,
+      envio.racional || "[não informado — envio anterior à mudança do formulário]",
     ].join("\n");
   });
 

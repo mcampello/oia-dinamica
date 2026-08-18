@@ -59,4 +59,15 @@ describe("montarPromptCruzamento", () => {
     expect(resultado.texto).not.toContain("resposta antiga");
     expect(resultado.gruposSemEnvio).toEqual([2, 3, 4]);
   });
+
+  it("não apresenta o prompt legado como racional da decisão", () => {
+    const legado = envio("legado", 1, "2026-08-18T10:00:00.000Z");
+    legado.racional = "";
+
+    const resultado = montarPromptCruzamento([legado]);
+
+    expect(resultado.texto).toContain(
+      "[não informado — envio anterior à mudança do formulário]",
+    );
+  });
 });

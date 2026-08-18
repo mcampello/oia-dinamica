@@ -218,7 +218,9 @@ export default async function DetalheTurma({
                     </div>
                     <div className="resposta-campo resposta-racional">
                       <span className="rotulo">Racional da decisão</span>
-                      <span className="valor">{e.racional}</span>
+                      <span className="valor">
+                        {e.racional || "Não informado — peça ao grupo para reenviar o resultado."}
+                      </span>
                     </div>
                   </div>
                 ))}

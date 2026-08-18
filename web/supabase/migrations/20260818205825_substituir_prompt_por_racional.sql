@@ -1,6 +1,9 @@
--- O campo deixa de guardar o texto inicial enviado ao modelo e passa a
--- registrar como o grupo ponderou evidências, tensões e condições.
-alter table public.envios rename column prompt to racional;
+-- Preserva os prompts dos envios anteriores sem apresentá-los como se fossem
+-- o racional da decisão. Esses envios ficam com o novo campo vazio e precisam
+-- ser reenviados para participar corretamente do alinhamento.
+alter table public.envios rename column prompt to prompt_legado;
+alter table public.envios add column racional text not null default '';
+alter table public.envios alter column racional drop default;
 
 -- Remove a assinatura anterior caso a migração atômica já tenha sido
 -- aplicada em outro ambiente antes desta migração.
