@@ -28,6 +28,12 @@ Cada grupo faz o papel de uma dessas áreas, usando uma ferramenta de IA e apena
 
 Três regras valem para todos: só os seus documentos (nada de internet nem conhecimento de mercado), toda conclusão aponta para um dado, e informação que faltar se declara — não se estima.
 
+## A interface (turmas com código)
+
+Em [`web/`](web/) vive a interface da dinâmica (Next.js + Supabase, deploy na Vercel): a turma entra com um código entregue pelo facilitador, baixa o material do seu grupo e envia o resultado na mesma tela. O facilitador cria turmas e acompanha os envios em `/admin`, incluindo o prompt de cruzamento pronto para o fechamento.
+
+Para rodar local: `cd web && npm install`, copie `.env.example` para `.env.local` com as chaves do Supabase, e `npm run dev`. A migration do banco está em `web/supabase/migrations/`.
+
 ## Para facilitadores
 
 O material de condução está em [`Facilitador (não distribuir)/`](Facilitador%20(n%C3%A3o%20distribuir)/) — roteiro minuto a minuto, prompt de cruzamento e o documento de regras da empresa usado no fechamento. **Participante: não abra.** Você só perderia a melhor parte.
