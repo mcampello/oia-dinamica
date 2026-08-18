@@ -1,0 +1,116 @@
+/* ============================================================
+   Pandora — linguagem visual (tokens)
+   ------------------------------------------------------------
+   Copiado do Pandora AI Design System (Claude Design). Duas
+   adaptações locais: as fontes Google entram por <link> no layout
+   (sem @import) e o JetBrains Mono self-hosted foi dispensado —
+   --font-mono cai nos monospace do sistema.
+   ============================================================ */
+
+:root {
+  /* ---------- Paleta ---------- */
+  --pd-bg:      #0A0A0B;  /* fundo escuro — a peça vive aqui */
+  --pd-purple:  #7024AE;  /* roxo da marca */
+  --pd-violet:  #A855F7;  /* violeta de luz */
+  --pd-lilac:   #C9A6E8;  /* lilás de apoio — rótulos, marcadores */
+  --pd-paper:   #F1EFF2;  /* fundo claro */
+  --pd-ink:     #161018;  /* texto sobre papel */
+
+  /* ---------- Superfície escura — hierarquia por opacidade de branco ---------- */
+  --on-dark-1:     rgba(255,255,255,0.92);  /* títulos */
+  --on-dark-2:     rgba(255,255,255,0.72);  /* corpo */
+  --on-dark-3:     rgba(255,255,255,0.48);  /* metadados */
+  --hairline:      rgba(255,255,255,0.18);  /* fios de 1px, malha */
+  --hairline-soft: rgba(255,255,255,0.10);
+  --fill-glass:    rgba(255,255,255,0.05);  /* fundo de selo */
+  --border-seal:   rgba(255,255,255,0.20);  /* borda de selo */
+  --border-btn:    rgba(255,255,255,0.28);  /* borda de botão secundário */
+
+  /* ---------- Superfície clara ---------- */
+  --on-paper-1: var(--pd-ink);
+  --on-paper-2: rgba(22,16,24,0.72);
+  --on-paper-3: rgba(22,16,24,0.48);
+  --rule-paper: rgba(22,16,24,0.14);
+
+  /* ---------- Luz: um único foco, canto superior esquerdo ---------- */
+  --light-corner:
+    radial-gradient(90% 70% at 0% 0%, rgba(112,36,174,0.60) 0%, rgba(112,36,174,0.22) 28%, rgba(10,10,11,0) 55%);
+
+  /* ---------- Malha de pontos ---------- */
+  --dot-mesh: radial-gradient(rgba(255,255,255,0.18) 1px, transparent 1px);
+  --dot-mesh-size: 34px;
+
+  /* ---------- Semantic ---------- */
+  --color-success: #4ADE80;
+  --color-danger:  #F87171;
+  --color-info:    var(--pd-violet);
+
+  /* ---------- Type families ---------- */
+  --font-display:  "Instrument Sans", system-ui, sans-serif;  /* títulos */
+  --font-text:     "Inter", system-ui, sans-serif;            /* corpo */
+  --font-wordmark: "Sora", system-ui, sans-serif;             /* SOMENTE wordmark */
+  --font-accent:   "Newsreader", Georgia, serif;              /* destaque em frase central */
+  --font-mono:     ui-monospace, SFMono-Regular, Menlo, monospace; /* código */
+
+  /* ---------- Escala — tetos, não sugestões ---------- */
+  --text-hero:    44px;  /* teto absoluto de título */
+  --text-section: 21px;
+  --text-card:    15px;
+  --text-body:    13.5px;
+  --text-ui:      12.5px;  /* menu, rótulos, botões */
+  --text-meta:    11.5px;
+
+  --track-display: -0.032em;
+  --leading-display: 1.02;
+  --leading-text: 1.55;
+
+  /* ---------- Espaço — contido ---------- */
+  --page-max: 1080px;
+  --gap-1: 6px;
+  --gap-2: 10px;
+  --gap-3: 14px;
+  --gap-4: 24px;   /* respiro mínimo entre blocos */
+  --gap-5: 32px;
+  --gap-6: 44px;
+  --gap-7: 60px;   /* respiro máximo entre blocos */
+
+  /* ---------- Cantos ---------- */
+  --radius-pill: 999px;   /* botões, selos, filtros */
+  --radius-soft: 16px;    /* imagens e blocos de superfície */
+  --radius-tight: 10px;   /* campos, menus, toasts */
+  --radius-flat: 0;       /* réguas e divisórias — o fio nunca arredonda */
+
+  --ease-soft: cubic-bezier(.2,.8,.2,1);
+  --ease-firm: cubic-bezier(.4,0,.2,1);
+}
+
+/* ============================================================
+   Receitas de tipo
+   ============================================================ */
+
+html { background: var(--pd-bg); color: var(--on-dark-2); font-family: var(--font-text); }
+body { margin: 0; font-size: var(--text-body); line-height: var(--leading-text); -webkit-font-smoothing: antialiased; }
+
+h1, .h1 { font-family: var(--font-display); font-weight: 600; font-size: var(--text-hero); line-height: var(--leading-display); letter-spacing: var(--track-display); color: var(--on-dark-1); margin: 0; }
+h2, .h2 { font-family: var(--font-display); font-weight: 600; font-size: var(--text-section); line-height: 1.15; letter-spacing: -0.028em; color: var(--on-dark-1); margin: 0; }
+h3, .h3 { font-family: var(--font-display); font-weight: 500; font-size: var(--text-card); line-height: 1.25; letter-spacing: -0.02em; color: var(--on-dark-1); margin: 0; }
+p, .body { font-size: var(--text-body); line-height: var(--leading-text); color: var(--on-dark-2); margin: 0; }
+.label { font-size: var(--text-ui); line-height: 1.4; color: var(--on-dark-2); }
+.meta  { font-size: var(--text-meta); line-height: 1.4; color: var(--on-dark-3); }
+.wordmark { font-family: var(--font-wordmark); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+
+a { color: var(--pd-lilac); text-decoration: none; }
+a:hover { color: #FFFFFF; }
+
+code, .code { font-family: var(--font-mono); font-size: 0.92em; color: var(--pd-lilac); }
+
+/* ---------- Primitivas ---------- */
+.pd-light { background: var(--light-corner), var(--pd-bg); }
+.pd-mesh { background-image: var(--dot-mesh); background-size: var(--dot-mesh-size) var(--dot-mesh-size); opacity: 0.45; -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 100%); mask-image: linear-gradient(180deg, #000 0%, transparent 100%); }
+.pd-rule { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--hairline); padding-top: 10px; font-size: var(--text-meta); color: var(--on-dark-3); }
+.pd-seal { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border-seal); background: var(--fill-glass); border-radius: var(--radius-pill); padding: 5px 12px; font-size: var(--text-ui); color: var(--on-dark-2); }
+.pd-seal::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--pd-lilac); flex-shrink: 0; }
+.pd-btn { display: inline-flex; align-items: center; background: #FFFFFF; color: #000000; border: none; border-radius: var(--radius-pill); padding: 8px 18px; font-family: var(--font-text); font-size: var(--text-ui); font-weight: 500; cursor: pointer; }
+.pd-btn-lg { display: inline-flex; align-items: center; gap: 12px; border: 1px solid var(--border-btn); background: transparent; color: var(--on-dark-1); border-radius: var(--radius-pill); padding: 12px 22px; font-family: var(--font-text); font-size: var(--text-ui); font-style: italic; cursor: pointer; }
+.pd-btn-lg svg { width: 15px; height: 15px; stroke-width: 1.4; }
+.pd-col { border-left: 1px solid var(--hairline); padding-left: 18px; }
