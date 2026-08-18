@@ -14,10 +14,10 @@ Cada grupo faz o papel de uma dessas áreas, usando uma ferramenta de IA e apena
 
 | Grupo | Papel | Download |
 |---|---|---|
-| Grupo 1 | Gestão de Pessoas | [grupo-1-pessoas.zip](https://github.com/mcampello/oia-dinamica/raw/main/downloads/grupo-1-pessoas.zip) |
-| Grupo 2 | Financeiro | [grupo-2-financeiro.zip](https://github.com/mcampello/oia-dinamica/raw/main/downloads/grupo-2-financeiro.zip) |
-| Grupo 3 | Jurídico | [grupo-3-juridico.zip](https://github.com/mcampello/oia-dinamica/raw/main/downloads/grupo-3-juridico.zip) |
-| Grupo 4 | Operações | [grupo-4-operacoes.zip](https://github.com/mcampello/oia-dinamica/raw/main/downloads/grupo-4-operacoes.zip) |
+| Grupo 1 | Gestão de Pessoas | [grupo-1-pessoas.zip](https://github.com/mcampello/oia-dinamica/releases/latest/download/grupo-1-pessoas.zip) |
+| Grupo 2 | Financeiro | [grupo-2-financeiro.zip](https://github.com/mcampello/oia-dinamica/releases/latest/download/grupo-2-financeiro.zip) |
+| Grupo 3 | Jurídico | [grupo-3-juridico.zip](https://github.com/mcampello/oia-dinamica/releases/latest/download/grupo-3-juridico.zip) |
+| Grupo 4 | Operações | [grupo-4-operacoes.zip](https://github.com/mcampello/oia-dinamica/releases/latest/download/grupo-4-operacoes.zip) |
 
 ## Como participar
 
@@ -32,4 +32,4 @@ Três regras valem para todos: só os seus documentos (nada de internet nem conh
 
 O material de condução está em [`Facilitador (não distribuir)/`](Facilitador%20(n%C3%A3o%20distribuir)/) — roteiro minuto a minuto, prompt de cruzamento e o documento de regras da empresa usado no fechamento. **Participante: não abra.** Você só perderia a melhor parte.
 
-Alterou algum documento de grupo? Regere os ZIPs com `./ferramentas/gerar-zips.sh` antes de commitar.
+Os ZIPs são regenerados automaticamente a cada push na `main` (workflow em `.github/workflows/gerar-zips.yml`) e publicados como assets da release `downloads` — não há nada para atualizar à mão.
