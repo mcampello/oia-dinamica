@@ -1,23 +1,20 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { sessaoTurma } from "@/lib/session";
 import { db, type Envio, type Turma } from "@/lib/supabase";
 import { CANDIDATOS, GRUPOS, NUMEROS_GRUPO } from "@/lib/grupos";
 import { horaCurta } from "@/lib/data";
-import { enviarResultado, sairDaTurma } from "./actions";
+import { sairDaTurma } from "./actions";
 
 export const dynamic = "force-dynamic";
 
-const SETA_BAIXO = (
+const SETA_DIREITA = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden>
-    <path d="M12 4v13m0 0l-5-5m5 5l5-5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M5 12h14m0 0l-5-5m5 5l-5 5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-export default async function PaginaTurma({
-  searchParams,
-}: {
-  searchParams: Promise<{ enviado?: string; erro?: string }>;
-}) {
+export default async function PaginaTurma() {
   const turmaId = await sessaoTurma();
   if (!turmaId) redirect("/");
 
@@ -35,8 +32,6 @@ export default async function PaginaTurma({
     .order("created_at", { ascending: false })
     .returns<Envio[]>();
 
-  const { enviado, erro } = await searchParams;
-  const grupoEnviado = enviado ? Number(enviado) : null;
   const gruposComEnvio = new Set((envios ?? []).map((e) => e.grupo));
 
   return (
@@ -72,128 +67,27 @@ export default async function PaginaTurma({
 
         <section className="secao">
           <div className="secao-cabeca">
-            <h2>Baixe a pasta do seu grupo</h2>
-            <span className="meta">Baixe só a sua — abrir a de outro grupo estraga a dinâmica.</span>
+            <h2>Abra a tarefa do seu grupo</h2>
+            <span className="meta">
+              Entre só na do seu grupo — abrir a de outro estraga a dinâmica.
+            </span>
           </div>
           <div className="grade-grupos">
             {NUMEROS_GRUPO.map((n) => {
               const g = GRUPOS[n];
               return (
-                <div key={n} className="bloco sobe">
+                <Link href={`/turma/grupo/${n}`} key={n} className="bloco bloco-link sobe">
                   <span className="papel">{g.nome}</span>
                   <h3>{g.papel}</h3>
                   <span className="docs">tarefa · currículos · {g.docs}</span>
                   <div className="bloco-acao">
-                    <a className="btn-baixar" href={`/downloads/${g.zip}`} download>
-                      Baixar material (.zip) {SETA_BAIXO}
-                    </a>
+                    <span className="btn-baixar">
+                      Ver a tarefa do grupo {SETA_DIREITA}
+                    </span>
                   </div>
-                </div>
+                </Link>
               );
             })}
-          </div>
-          <p className="meta">
-            Descompacte, crie um projeto na ferramenta de IA indicada pelo facilitador e
-            suba os 5 arquivos. O <code>00-A-TAREFA.md</code> explica o resto. O prompt é
-            de vocês — não existe roteiro.
-          </p>
-        </section>
-
-        <section className="secao" id="resultado">
-          <div className="secao-cabeca">
-            <h2>Envie o resultado do seu grupo</h2>
-            <span className="meta">Reenviou? Vale o mais recente.</span>
-          </div>
-
-          {grupoEnviado && GRUPOS[grupoEnviado as 1 | 2 | 3 | 4] && (
-            <p className="aviso aviso-ok">
-              Resultado do {GRUPOS[grupoEnviado as 1 | 2 | 3 | 4].nome} —{" "}
-              {GRUPOS[grupoEnviado as 1 | 2 | 3 | 4].papel} recebido.
-            </p>
-          )}
-          {erro === "campos" && (
-            <p className="aviso aviso-erro">Preencha todos os campos — inclusive o prompt.</p>
-          )}
-          {erro === "envio" && (
-            <p className="aviso aviso-erro">Não foi possível gravar. Tente de novo.</p>
-          )}
-
-          <div className="bloco-envio">
-            <form action={enviarResultado} className="form-envio">
-              <div className="campo">
-                <label htmlFor="grupo">Seu grupo</label>
-                <select id="grupo" name="grupo" required defaultValue="">
-                  <option value="" disabled>
-                    Escolha o grupo
-                  </option>
-                  {NUMEROS_GRUPO.map((n) => (
-                    <option key={n} value={n}>
-                      {GRUPOS[n].nome} — {GRUPOS[n].papel}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="campo">
-                <label>Candidato escolhido</label>
-                <div className="opcoes" style={{ paddingTop: 7 }}>
-                  {Object.entries(CANDIDATOS).map(([valor, nome]) => (
-                    <label key={valor} className="opcao">
-                      <input type="radio" name="candidato" value={valor} required />
-                      {nome}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="motivo">Motivo</label>
-                <textarea
-                  id="motivo"
-                  name="motivo"
-                  placeholder="Em até três linhas."
-                  required
-                />
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="dado">O dado que sustenta</label>
-                <textarea
-                  id="dado"
-                  name="dado"
-                  placeholder="De qual documento saiu, e qual número ou trecho."
-                  required
-                />
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="faltou">O que ficou faltando</label>
-                <textarea
-                  id="faltou"
-                  name="faltou"
-                  placeholder="Que informação vocês gostariam de ter e não têm."
-                  required
-                />
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="prompt">O prompt que vocês usaram</label>
-                <textarea
-                  id="prompt"
-                  name="prompt"
-                  style={{ minHeight: 90 }}
-                  placeholder="Cole o prompt inteiro. Ele entra no fechamento — sem prompt, não vale."
-                  required
-                />
-              </div>
-
-              <div className="linha-acao">
-                <button type="submit" className="btn-roxo">
-                  Enviar resultado
-                </button>
-                <span className="nota">Todos os campos apontam para os seus documentos.</span>
-              </div>
-            </form>
           </div>
         </section>
 

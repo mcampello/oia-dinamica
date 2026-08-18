@@ -130,6 +130,7 @@
   transition: background 180ms var(--ease-soft);
 }
 .btn-roxo:hover { background: var(--pd-violet); }
+a.btn-roxo, a.btn-fio-escuro { text-decoration: none; }
 
 .btn-baixar {
   display: inline-flex;
@@ -182,6 +183,13 @@
 .bloco .papel { font-size: var(--text-meta); color: var(--pd-lilac); }
 .bloco .docs { font-size: var(--text-meta); color: var(--on-dark-3); flex: 1; }
 .bloco-acao { padding-top: var(--gap-2); }
+a.bloco-link { text-decoration: none; color: inherit; }
+a.bloco-link:hover { border-color: var(--pd-lilac); background: rgba(255,255,255,0.06); }
+a.bloco-link:hover .btn-baixar { border-color: var(--pd-lilac); color: #fff; }
+a.bloco-link:focus-visible {
+  outline: 2px solid var(--pd-lilac);
+  outline-offset: 2px;
+}
 
 /* Bloco de conversão — o único roxo cheio da página */
 .bloco-envio {
@@ -221,6 +229,16 @@
   font-size: var(--text-meta);
   color: var(--pd-lilac);
 }
+.dicas-guia {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--on-dark-2);
+  font-size: var(--text-ui);
+}
+.dicas-guia li::marker { color: var(--pd-lilac); }
 
 /* ---------- Tabela escura (comp-table do DS) ---------- */
 .tabela { display: flex; flex-direction: column; }
@@ -234,6 +252,9 @@
 .tabela .th { font-size: var(--text-meta); color: var(--on-dark-3); border-color: var(--hairline); }
 .tabela .tr:hover { background: rgba(255,255,255,0.03); }
 .cols-envios { grid-template-columns: 1fr 1.4fr 90px; }
+.cols-docs { grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); }
+.tabela .tr.cols-docs { align-items: start; }
+.arquivo-doc { overflow-wrap: anywhere; }
 
 /* ---------- Selo de estado com ponto ---------- */
 .estado { font-size: var(--text-meta); color: var(--on-dark-2); display: inline-flex; align-items: center; gap: 6px; }
@@ -427,6 +448,8 @@
   h1, .h1 { font-size: 30px; }
   .grade-grupos { grid-template-columns: 1fr; }
   .form-envio { grid-template-columns: 1fr; }
+  .cols-docs { grid-template-columns: 1fr; gap: 4px !important; }
+  .tabela .th.cols-docs { display: none; }
   .cols-turmas { grid-template-columns: 1.4fr 1fr 120px; }
   .cols-turmas .oculta-mobile { display: none; }
   .entrada-miolo { padding-top: 5vh; }
