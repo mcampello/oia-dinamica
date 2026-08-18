@@ -4,54 +4,82 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/supabase";
 import { encerrarSessaoTurma, sessaoTurma } from "@/lib/session";
-import { CANDIDATOS, isNumeroGrupo } from "@/lib/grupos";
+import { isNumeroGrupo } from "@/lib/grupos";
+import {
+  lerValoresResultado,
+  validarValoresResultado,
+  type EstadoResultado,
+} from "@/lib/resultado";
 
-export async function enviarResultado(formData: FormData) {
+type ResultadoRegistro = {
+  status: "sucesso" | "encerrada" | "fechados";
+  envio_id: string | null;
+  enviado_em: string | null;
+};
+
+export async function enviarResultado(
+  _estadoAnterior: EstadoResultado,
+  formData: FormData,
+): Promise<EstadoResultado> {
+  const valores = lerValoresResultado(formData);
+  const responderErro = (erro: EstadoResultado["erro"]): EstadoResultado => ({
+    status: "erro",
+    erro,
+    valores,
+    envioId: null,
+    enviadoEm: null,
+  });
+
   const turmaId = await sessaoTurma();
   if (!turmaId) redirect("/");
 
   const grupo = Number(formData.get("grupo"));
-  const veioDaPaginaDoGrupo =
-    formData.get("origem") === "grupo" && isNumeroGrupo(grupo);
-  const retorno = veioDaPaginaDoGrupo ? `/turma/grupo/${grupo}` : "/turma";
-  const candidato = String(formData.get("candidato") ?? "");
-  const motivo = String(formData.get("motivo") ?? "").trim();
-  const dado = String(formData.get("dado") ?? "").trim();
-  const faltou = String(formData.get("faltou") ?? "").trim();
-  const prompt = String(formData.get("prompt") ?? "").trim();
+  if (!isNumeroGrupo(grupo)) return responderErro("campos");
+  const erroValidacao = validarValoresResultado(valores);
+  if (erroValidacao) return responderErro(erroValidacao);
 
-  const valido = Boolean(
-    isNumeroGrupo(grupo) &&
-    Object.hasOwn(CANDIDATOS, candidato) &&
-    motivo &&
-    dado &&
-    faltou &&
-    prompt,
-  );
-  if (!valido) redirect(`${retorno}?erro=campos`);
-
-  const { data: turma } = await db()
-    .from("turmas")
-    .select("id")
-    .eq("id", turmaId)
-    .eq("ativa", true)
-    .maybeSingle();
-  if (!turma) redirect("/");
-
-  const { error } = await db().from("envios").insert({
-    turma_id: turmaId,
-    grupo,
-    candidato,
-    motivo: motivo.slice(0, 2000),
-    dado: dado.slice(0, 2000),
-    faltou: faltou.slice(0, 2000),
-    prompt: prompt.slice(0, 8000),
-  });
-  if (error) redirect(`${retorno}?erro=envio`);
+  const valoresPersistidos = {
+    candidato: valores.candidato,
+    motivo: valores.motivo.trim(),
+    dado: valores.dado.trim(),
+    faltou: valores.faltou.trim(),
+    prompt: valores.prompt.trim(),
+  };
+  const { data: resultado, error } = await db()
+    .rpc("registrar_envio", {
+      p_turma_id: turmaId,
+      p_grupo: grupo,
+      p_candidato: valoresPersistidos.candidato,
+      p_motivo: valoresPersistidos.motivo,
+      p_dado: valoresPersistidos.dado,
+      p_faltou: valoresPersistidos.faltou,
+      p_prompt: valoresPersistidos.prompt,
+    })
+    .returns<ResultadoRegistro[]>()
+    .single();
+  if (error || !resultado) return responderErro("envio");
+  if (resultado.status === "encerrada") redirect("/?motivo=encerrada");
+  if (resultado.status === "fechados") return responderErro("fechados");
+  if (
+    resultado.status !== "sucesso" ||
+    typeof resultado.envio_id !== "string" ||
+    typeof resultado.enviado_em !== "string"
+  ) {
+    return responderErro("envio");
+  }
 
   revalidatePath("/turma");
-  if (veioDaPaginaDoGrupo) redirect(`${retorno}?enviado=1`);
-  redirect(`/turma?enviado=${grupo}`);
+  revalidatePath(`/turma/grupo/${grupo}`);
+  revalidatePath("/admin");
+  revalidatePath(`/admin/turmas/${turmaId}`);
+  revalidatePath(`/admin/turmas/${turmaId}/projetar`);
+  return {
+    status: "sucesso",
+    erro: null,
+    valores: valoresPersistidos,
+    envioId: resultado.envio_id,
+    enviadoEm: resultado.enviado_em,
+  };
 }
 
 export async function sairDaTurma() {

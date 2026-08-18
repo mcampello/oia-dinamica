@@ -3,12 +3,14 @@ import { sessaoAdmin } from "@/lib/session";
 import { db, type Turma } from "@/lib/supabase";
 import { dataCurta } from "@/lib/data";
 import BotaoCopiar from "@/components/BotaoCopiar";
+import ControlesTurma from "@/components/ControlesTurma";
 import { MARCAS, obterMarca } from "@/lib/marcas";
-import { alternarTurma, criarTurma, entrarAdmin, sairAdmin } from "./actions";
+import { quantidadeGruposComEnvio } from "@/lib/cruzamento";
+import { criarTurma, entrarAdmin, sairAdmin } from "./actions";
 
 export const dynamic = "force-dynamic";
 
-type TurmaComContagem = Turma & { envios: { count: number }[] };
+type TurmaComEnvios = Turma & { envios: { grupo: number }[] };
 
 export default async function Admin({
   searchParams,
@@ -40,9 +42,9 @@ export default async function Admin({
 
   const { data: turmas } = await db()
     .from("turmas")
-    .select("*, envios(count)")
+    .select("*, envios(grupo)")
     .order("created_at", { ascending: false })
-    .returns<TurmaComContagem[]>();
+    .returns<TurmaComEnvios[]>();
 
   return (
     <>
@@ -114,26 +116,15 @@ export default async function Admin({
                     <code style={{ color: "var(--pd-purple)" }}>{t.codigo}</code>
                     <BotaoCopiar texto={t.codigo} rotulo="copiar" />
                   </span>
-                  <span className="meta oculta-mobile">{t.envios?.[0]?.count ?? 0}</span>
-                  <span className="meta oculta-mobile">{dataCurta(t.created_at)}</span>
-                  <span
-                    style={{
-                      display: "inline-flex",
-                      justifyContent: "flex-end",
-                      alignItems: "center",
-                      gap: 12,
-                    }}
-                  >
-                    <span className={t.ativa ? "estado" : "estado mudo"}>
-                      {t.ativa ? "Ativa" : "Encerrada"}
-                    </span>
-                    <form action={alternarTurma}>
-                      <input type="hidden" name="id" value={t.id} />
-                      <button type="submit" className="btn-fio">
-                        {t.ativa ? "encerrar" : "reabrir"}
-                      </button>
-                    </form>
+                  <span className="meta oculta-mobile">
+                    {quantidadeGruposComEnvio(t.envios ?? [])} de 4
                   </span>
+                  <span className="meta oculta-mobile">{dataCurta(t.created_at)}</span>
+                  <ControlesTurma
+                    id={t.id}
+                    ativa={t.ativa}
+                    enviosAbertos={t.envios_abertos}
+                  />
                 </div>
               ))}
             </div>

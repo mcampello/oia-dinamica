@@ -1,6 +1,10 @@
 import { CANDIDATOS, GRUPOS, NUMEROS_GRUPO, NumeroGrupo } from "./grupos";
 import type { Envio } from "./supabase";
 
+export function quantidadeGruposComEnvio(envios: Array<Pick<Envio, "grupo">>): number {
+  return new Set(envios.map((envio) => envio.grupo)).size;
+}
+
 // O envio mais recente de cada grupo é a resposta vigente.
 export function vigentes(envios: Envio[]): Map<NumeroGrupo, Envio> {
   const mapa = new Map<NumeroGrupo, Envio>();

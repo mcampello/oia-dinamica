@@ -6,6 +6,8 @@ import { CANDIDATOS, GRUPOS, NUMEROS_GRUPO } from "@/lib/grupos";
 import { montarPromptCruzamento, vigentes } from "@/lib/cruzamento";
 import { dataHora } from "@/lib/data";
 import BotaoCopiar from "@/components/BotaoCopiar";
+import AtualizadorAutomatico from "@/components/AtualizadorAutomatico";
+import ControlesTurma from "@/components/ControlesTurma";
 import { obterMarca } from "@/lib/marcas";
 
 export const dynamic = "force-dynamic";
@@ -38,6 +40,7 @@ export default async function DetalheTurma({
 
   return (
     <>
+      <AtualizadorAutomatico />
       <header className="papel-topo">
         <div className="papel-topo-esq">
           <span className="papel-titulo">{turma.nome}</span>
@@ -46,12 +49,36 @@ export default async function DetalheTurma({
             {obterMarca(turma.marca).nome} · {turma.ativa ? "ativa" : "encerrada"}
           </span>
         </div>
-        <Link href="/admin" className="btn-fio" style={{ textDecoration: "none" }}>
-          ← Turmas
-        </Link>
+        <div className="acoes-topo">
+          <Link
+            href={`/admin/turmas/${id}/projetar`}
+            target="_blank"
+            className="btn-fio"
+            style={{ textDecoration: "none" }}
+          >
+            Projetar ↗
+          </Link>
+          <Link href="/admin" className="btn-fio" style={{ textDecoration: "none" }}>
+            ← Turmas
+          </Link>
+        </div>
       </header>
 
       <main className="papel-miolo">
+        <section className="painel-controles sobe">
+          <div>
+            <h2>Condução da turma</h2>
+            <p className="meta">
+              Fechar envios mantém o material acessível. Encerrar também remove o acesso dos alunos.
+            </p>
+          </div>
+          <ControlesTurma
+            id={turma.id}
+            ativa={turma.ativa}
+            enviosAbertos={turma.envios_abertos}
+          />
+        </section>
+
         <section className="bloco-roxo sobe">
           <h3>Cruzamento no Claude</h3>
           <ol

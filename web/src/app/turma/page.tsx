@@ -4,6 +4,8 @@ import { sessaoTurma } from "@/lib/session";
 import { db, type Turma } from "@/lib/supabase";
 import { GRUPOS, NUMEROS_GRUPO } from "@/lib/grupos";
 import { obterMarca } from "@/lib/marcas";
+import { quantidadeGruposComEnvio } from "@/lib/cruzamento";
+import AtualizadorAutomatico from "@/components/AtualizadorAutomatico";
 import { sairDaTurma } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -25,7 +27,7 @@ export default async function PaginaTurma() {
     .select("*")
     .eq("id", turmaId)
     .maybeSingle<Turma>();
-  if (!turma || !turma.ativa) redirect("/");
+  if (!turma || !turma.ativa) redirect("/?motivo=encerrada");
   const marca = obterMarca(turma.marca);
 
   const { data: envios } = await db()
@@ -33,10 +35,11 @@ export default async function PaginaTurma() {
     .select("grupo")
     .eq("turma_id", turmaId);
 
-  const gruposComEnvio = new Set((envios ?? []).map((e) => e.grupo));
+  const gruposComEnvio = quantidadeGruposComEnvio(envios ?? []);
 
   return (
     <div className="pagina-escura" data-marca={marca.slug}>
+      <AtualizadorAutomatico />
       <header className="topo">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={marca.logo} alt={marca.nome} className="logo" />
@@ -108,7 +111,9 @@ export default async function PaginaTurma() {
                 );
               })}
             </div>
-            <p className="meta resumo-envios">{gruposComEnvio.size} de 4 grupos enviaram</p>
+            <p className="meta resumo-envios">
+              {gruposComEnvio} de 4 grupos enviaram · {turma.envios_abertos ? "envios abertos" : "envios fechados"}
+            </p>
           </aside>
         </div>
       </main>

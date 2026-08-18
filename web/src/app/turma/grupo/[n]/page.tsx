@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { enviarResultado } from "@/app/turma/actions";
 import AssistentePassos from "@/components/AssistentePassos";
-import { db } from "@/lib/supabase";
+import AtualizadorAutomatico from "@/components/AtualizadorAutomatico";
+import FormularioResultado from "@/components/FormularioResultado";
+import { db, type Envio } from "@/lib/supabase";
 import { sessaoTurma } from "@/lib/session";
-import { CANDIDATOS, GRUPOS, isNumeroGrupo } from "@/lib/grupos";
+import { GRUPOS, isNumeroGrupo } from "@/lib/grupos";
 import { obterMarca } from "@/lib/marcas";
 import {
   DICAS_PROMPT,
@@ -39,10 +40,8 @@ const ETAPAS = [
 
 export default async function PaginaGrupo({
   params,
-  searchParams,
 }: {
   params: Promise<{ n: string }>;
-  searchParams: Promise<{ enviado?: string; erro?: string }>;
 }) {
   const numero = Number((await params).n);
   if (!isNumeroGrupo(numero)) notFound();
@@ -52,19 +51,27 @@ export default async function PaginaGrupo({
 
   const { data: turma } = await db()
     .from("turmas")
-    .select("id, marca")
+    .select("id, marca, ativa, envios_abertos")
     .eq("id", turmaId)
-    .eq("ativa", true)
     .maybeSingle();
-  if (!turma) redirect("/");
+  if (!turma || !turma.ativa) redirect("/?motivo=encerrada");
   const marca = obterMarca(turma.marca);
+
+  const { data: envioAtual } = await db()
+    .from("envios")
+    .select("*")
+    .eq("turma_id", turmaId)
+    .eq("grupo", numero)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle<Envio>();
 
   const g = GRUPOS[numero];
   const guia = GUIAS[numero];
-  const { enviado, erro } = await searchParams;
 
   return (
     <div className="pagina-escura" data-marca={marca.slug}>
+      <AtualizadorAutomatico />
       <header className="topo">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={marca.logo} alt={marca.nome} className="logo" />
@@ -80,7 +87,7 @@ export default async function PaginaGrupo({
               {g.nome} — {g.papel}
             </span>
             <h1>Guia do grupo</h1>
-            <AssistentePassos etapas={ETAPAS} passoInicial={enviado || erro ? 4 : 1}>
+            <AssistentePassos etapas={ETAPAS} passoInicial={envioAtual ? 4 : 1}>
               <div>
                 <h2>Entenda a situação</h2>
                 {SITUACAO.map((paragrafo) => (
@@ -182,82 +189,11 @@ export default async function PaginaGrupo({
                 <span className="meta">Reenviou? Vale o mais recente.</span>
               </div>
 
-              {enviado === "1" && (
-                <p className="aviso aviso-ok">
-                  Resultado do {g.nome} — {g.papel} recebido.
-                </p>
-              )}
-              {erro === "campos" && (
-                <p className="aviso aviso-erro">Preencha todos os campos — inclusive o prompt.</p>
-              )}
-              {erro === "envio" && (
-                <p className="aviso aviso-erro">Não foi possível gravar. Tente de novo.</p>
-              )}
-
-              <form action={enviarResultado} className="form-envio">
-                <input type="hidden" name="grupo" value={numero} />
-                <input type="hidden" name="origem" value="grupo" />
-
-              <div className="campo campo-cheio">
-                <label>Candidato escolhido</label>
-                <div className="opcoes" style={{ paddingTop: 7 }}>
-                  {Object.entries(CANDIDATOS).map(([valor, nome]) => (
-                    <label key={valor} className="opcao">
-                      <input type="radio" name="candidato" value={valor} required />
-                      {nome}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="motivo">Motivo</label>
-                <textarea
-                  id="motivo"
-                  name="motivo"
-                  placeholder="Em até três linhas."
-                  required
-                />
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="dado">O dado que sustenta</label>
-                <textarea
-                  id="dado"
-                  name="dado"
-                  placeholder="De qual documento saiu, e qual número ou trecho."
-                  required
-                />
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="faltou">O que ficou faltando</label>
-                <textarea
-                  id="faltou"
-                  name="faltou"
-                  placeholder="Que informação vocês gostariam de ter e não têm."
-                  required
-                />
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="prompt">O prompt que vocês usaram</label>
-                <textarea
-                  id="prompt"
-                  name="prompt"
-                  style={{ minHeight: 90 }}
-                  placeholder="Cole o prompt inteiro. Ele entra no fechamento — sem prompt, não vale."
-                  required
-                />
-              </div>
-
-              <div className="linha-acao">
-                <button type="submit" className="btn-roxo">
-                  Enviar resultado
-                </button>
-                <span className="nota">Todos os campos apontam para os seus documentos.</span>
-              </div>
-              </form>
+              <FormularioResultado
+                grupo={numero}
+                envioAtual={envioAtual}
+                enviosAbertos={turma.envios_abertos}
+              />
             </div>
           </aside>
         </div>
