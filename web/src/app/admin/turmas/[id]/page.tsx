@@ -52,23 +52,53 @@ export default async function DetalheTurma({
 
       <main className="papel-miolo">
         <section className="bloco-roxo sobe">
-          <h3>Prompt de cruzamento</h3>
-          <p>
-            As respostas vigentes dos quatro grupos, no formato do Roteiro do
-            Facilitador. Cole no seu projeto junto com o arquivo de regras da Vértice e
-            rode projetado.
-          </p>
+          <h3>Cruzamento no Claude</h3>
+          <ol
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
+              margin: 0,
+              paddingLeft: 20,
+            }}
+          >
+            <li>
+              <strong>Monte o projeto (uma vez).</strong> Baixe as regras da Vértice e
+              adicione o arquivo ao projeto no Claude.
+              <div style={{ marginTop: 8 }}>
+                <a
+                  href="https://raw.githubusercontent.com/mcampello/oia-dinamica/main/Facilitador%20(n%C3%A3o%20distribuir)/Regras-e-Estrategia-da-Vertice.md"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="pd-btn"
+                  style={{ color: "#000", textDecoration: "none" }}
+                >
+                  Abrir regras da Vértice
+                </a>
+              </div>
+            </li>
+            <li>
+              <strong>Depois dos envios.</strong> Copie o prompt de cruzamento. Ele já
+              inclui a resposta vigente dos quatro grupos.
+              <div style={{ marginTop: 8 }}>
+                <BotaoCopiar
+                  texto={promptCruzamento}
+                  rotulo="Copiar prompt de cruzamento"
+                  className="pd-btn"
+                />
+              </div>
+            </li>
+            <li>
+              <strong>Faça o cruzamento.</strong> Cole o prompt no projeto e rode com a
+              resposta projetada para a turma.
+            </li>
+          </ol>
           {gruposSemEnvio.length > 0 && (
             <p style={{ color: "#fff" }}>
               Atenção: sem envio de{" "}
               {gruposSemEnvio.map((n) => `${GRUPOS[n].nome} (${GRUPOS[n].papel})`).join(", ")}.
             </p>
           )}
-          <BotaoCopiar
-            texto={promptCruzamento}
-            rotulo="Copiar prompt de cruzamento"
-            className="pd-btn"
-          />
         </section>
 
         <section style={{ display: "flex", flexDirection: "column", gap: 14 }}>
