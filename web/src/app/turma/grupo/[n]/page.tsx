@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import AssistentePassos from "@/components/AssistentePassos";
+import AtualizadorAutomatico from "@/components/AtualizadorAutomatico";
 import FormularioResultado from "@/components/FormularioResultado";
-import { db } from "@/lib/supabase";
+import { db, type Envio } from "@/lib/supabase";
 import { sessaoTurma } from "@/lib/session";
 import { GRUPOS, isNumeroGrupo } from "@/lib/grupos";
 import { obterMarca } from "@/lib/marcas";
@@ -39,10 +40,8 @@ const ETAPAS = [
 
 export default async function PaginaGrupo({
   params,
-  searchParams,
 }: {
   params: Promise<{ n: string }>;
-  searchParams: Promise<{ enviado?: string; erro?: string }>;
 }) {
   const numero = Number((await params).n);
   if (!isNumeroGrupo(numero)) notFound();
@@ -52,19 +51,27 @@ export default async function PaginaGrupo({
 
   const { data: turma } = await db()
     .from("turmas")
-    .select("id, marca")
+    .select("id, marca, ativa, envios_abertos")
     .eq("id", turmaId)
-    .eq("ativa", true)
     .maybeSingle();
-  if (!turma) redirect("/");
+  if (!turma || !turma.ativa) redirect("/?motivo=encerrada");
   const marca = obterMarca(turma.marca);
+
+  const { data: envioAtual } = await db()
+    .from("envios")
+    .select("*")
+    .eq("turma_id", turmaId)
+    .eq("grupo", numero)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle<Envio>();
 
   const g = GRUPOS[numero];
   const guia = GUIAS[numero];
-  const { enviado, erro } = await searchParams;
 
   return (
     <div className="pagina-escura" data-marca={marca.slug}>
+      <AtualizadorAutomatico />
       <header className="topo">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={marca.logo} alt={marca.nome} className="logo" />
@@ -80,7 +87,7 @@ export default async function PaginaGrupo({
               {g.nome} — {g.papel}
             </span>
             <h1>Guia do grupo</h1>
-            <AssistentePassos etapas={ETAPAS} passoInicial={enviado || erro ? 4 : 1}>
+            <AssistentePassos etapas={ETAPAS} passoInicial={envioAtual ? 4 : 1}>
               <div>
                 <h2>Entenda a situação</h2>
                 {SITUACAO.map((paragrafo) => (
@@ -175,11 +182,9 @@ export default async function PaginaGrupo({
 
         </div>
         <FormularioResultado
-          numeroGrupo={numero}
-          nomeGrupo={g.nome}
-          papelGrupo={g.papel}
-          enviado={enviado}
-          erro={erro}
+          grupo={numero}
+          envioAtual={envioAtual}
+          enviosAbertos={turma.envios_abertos}
         />
       </main>
 
