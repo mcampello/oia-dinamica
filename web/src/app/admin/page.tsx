@@ -3,6 +3,7 @@ import { sessaoAdmin } from "@/lib/session";
 import { db, type Turma } from "@/lib/supabase";
 import { dataCurta } from "@/lib/data";
 import BotaoCopiar from "@/components/BotaoCopiar";
+import { MARCAS, obterMarca } from "@/lib/marcas";
 import { alternarTurma, criarTurma, entrarAdmin, sairAdmin } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -68,6 +69,16 @@ export default async function Admin({
               <label htmlFor="nome">Nome da turma</label>
               <input id="nome" name="nome" placeholder="Liderança Vetrus — ago/2026" required />
             </div>
+            <div className="campo" style={{ minWidth: 140 }}>
+              <label htmlFor="marca">Marca</label>
+              <select id="marca" name="marca" defaultValue="pandora" required>
+                {Object.entries(MARCAS).map(([slug, marca]) => (
+                  <option key={slug} value={slug}>
+                    {marca.nome}
+                  </option>
+                ))}
+              </select>
+            </div>
             <button type="submit" className="btn-ink">
               Criar turma
             </button>
@@ -96,7 +107,8 @@ export default async function Admin({
               {turmas.map((t) => (
                 <div key={t.id} className="tr cols-turmas">
                   <span>
-                    <Link href={`/admin/turmas/${t.id}`}>{t.nome}</Link>
+                    <Link href={`/admin/turmas/${t.id}`}>{t.nome}</Link>{" "}
+                    <span className="meta">· {obterMarca(t.marca).nome}</span>
                   </span>
                   <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
                     <code style={{ color: "var(--pd-purple)" }}>{t.codigo}</code>

@@ -10,6 +10,7 @@ import {
   sessaoAdmin,
 } from "@/lib/session";
 import { gerarCodigo } from "@/lib/codigo";
+import { obterMarca } from "@/lib/marcas";
 
 export async function entrarAdmin(formData: FormData) {
   const senha = process.env.ADMIN_PASSWORD;
@@ -32,10 +33,11 @@ export async function criarTurma(formData: FormData) {
 
   const nome = String(formData.get("nome") ?? "").trim().slice(0, 120);
   if (!nome) redirect("/admin?erro=nome");
+  const marca = obterMarca(formData.get("marca")).slug;
 
   // O código é único; em colisão (rara), tenta outro.
   for (let tentativa = 0; tentativa < 5; tentativa++) {
-    const { error } = await db().from("turmas").insert({ nome, codigo: gerarCodigo() });
+    const { error } = await db().from("turmas").insert({ nome, codigo: gerarCodigo(), marca });
     if (!error) {
       revalidatePath("/admin");
       redirect("/admin");

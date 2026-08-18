@@ -4,6 +4,7 @@ import { sessaoTurma } from "@/lib/session";
 import { db, type Envio, type Turma } from "@/lib/supabase";
 import { CANDIDATOS, GRUPOS, NUMEROS_GRUPO } from "@/lib/grupos";
 import { horaCurta } from "@/lib/data";
+import { obterMarca } from "@/lib/marcas";
 import { sairDaTurma } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -24,6 +25,7 @@ export default async function PaginaTurma() {
     .eq("id", turmaId)
     .maybeSingle<Turma>();
   if (!turma || !turma.ativa) redirect("/");
+  const marca = obterMarca(turma.marca);
 
   const { data: envios } = await db()
     .from("envios")
@@ -35,10 +37,10 @@ export default async function PaginaTurma() {
   const gruposComEnvio = new Set((envios ?? []).map((e) => e.grupo));
 
   return (
-    <div className="pagina-escura">
+    <div className="pagina-escura" data-marca={marca.slug}>
       <header className="topo">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/logo_dark.svg" alt="Pandora" className="logo" />
+        <img src={marca.logo} alt={marca.nome} className="logo" />
         <div className="topo-direita">
           <span className="meta">{turma.nome}</span>
           <form action={sairDaTurma}>
@@ -127,7 +129,7 @@ export default async function PaginaTurma() {
       </main>
 
       <footer className="pd-rule rodape">
-        <span>©2026 Pandora</span>
+        <span>©2026 {marca.nome}</span>
         <span>Vértice Serviços Gerenciados S.A. — caso fictício</span>
       </footer>
     </div>
