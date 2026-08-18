@@ -3,7 +3,6 @@ import type { NumeroGrupo } from "./grupos";
 export type DocGuia = {
   arquivo: string;
   descricao: string;
-  igualParaTodos?: boolean;
 };
 
 export type GuiaGrupo = {
@@ -12,32 +11,23 @@ export type GuiaGrupo = {
   docs: DocGuia[];
 };
 
-const TAREFA: DocGuia = {
-  arquivo: "00-A-TAREFA.md",
-  descricao: "O contexto, a tarefa, a entrega e as regras da dinâmica.",
-};
-
-const CURRICULOS: DocGuia = {
-  arquivo: "Dinamica-Curriculos-dos-tres-finalistas.md",
-  descricao: "Os três candidatos.",
-  igualParaTodos: true,
-};
-
 export const GUIAS: Record<NumeroGrupo, GuiaGrupo> = {
   1: {
     papelLongo: "Você é a liderança de Gestão de Pessoas.",
     angulo:
-      "Sua área enxerga a decisão pelo quadro de pessoas, pelo desenho do cargo, pelo fit cultural e pelo histórico de liderança e clima.",
+      "Sua área prioriza mobilidade interna, retenção, capacidade em IA e equidade, considerando também o quadro, o fit cultural e o histórico de liderança.",
     docs: [
-      TAREFA,
-      CURRICULOS,
+      {
+        arquivo: "Dinamica-P0-objetivos-estrategicos-de-pessoas.md",
+        descricao: "O que Gestão de Pessoas precisa alcançar em 2026 e como mede progresso.",
+      },
       {
         arquivo: "Dinamica-P1-quadro-de-pessoal-e-cargos.md",
         descricao: "Quem trabalha na Vértice, em que nível, e quanto se paga em cada faixa.",
       },
       {
-        arquivo: "Dinamica-P2-descricao-do-cargo-e-fit-cultural.md",
-        descricao: "O descritivo da vaga e o guia de avaliação de fit cultural da casa.",
+        arquivo: "Dinamica-P2-fit-cultural-e-origem-dos-requisitos.md",
+        descricao: "Como a casa avalia fit cultural e de onde vieram os requisitos da vaga.",
       },
       {
         arquivo: "Dinamica-P3-historico-de-lideranca-e-clima.md",
@@ -48,10 +38,12 @@ export const GUIAS: Record<NumeroGrupo, GuiaGrupo> = {
   2: {
     papelLongo: "Você é a liderança de Financeiro.",
     angulo:
-      "Sua área enxerga a decisão pelo orçamento, pelo custo de uma contratação e pelas regras de aprovação de despesas.",
+      "Sua área prioriza margem, caixa e investimento sustentável, considerando também o custo da contratação e as regras de aprovação.",
     docs: [
-      TAREFA,
-      CURRICULOS,
+      {
+        arquivo: "Dinamica-F0-objetivos-estrategicos-do-financeiro.md",
+        descricao: "O que o Financeiro precisa proteger, financiar e medir em 2026.",
+      },
       {
         arquivo: "Dinamica-F1-orcamento-2026-e-quadro-de-vagas.md",
         descricao: "O orçamento do ano, o que foi aprovado e como está o caixa.",
@@ -69,10 +61,12 @@ export const GUIAS: Record<NumeroGrupo, GuiaGrupo> = {
   3: {
     papelLongo: "Você é a liderança de Jurídico.",
     angulo:
-      "Sua área enxerga a decisão pelos vínculos e cláusulas, pelas contingências e pela checagem contratual dos candidatos.",
+      "Sua área prioriza viabilizar IA com governança e reduzir riscos evitáveis, considerando vínculos, contingências e impedimentos.",
     docs: [
-      TAREFA,
-      CURRICULOS,
+      {
+        arquivo: "Dinamica-J0-objetivos-estrategicos-do-juridico.md",
+        descricao: "O que o Jurídico precisa viabilizar e quais riscos pretende reduzir em 2026.",
+      },
       {
         arquivo: "Dinamica-J1-tipos-de-vinculo-e-clausulas.md",
         descricao: "As formas de contratar alguém no Brasil e as cláusulas que aparecem nos contratos.",
@@ -90,10 +84,12 @@ export const GUIAS: Record<NumeroGrupo, GuiaGrupo> = {
   4: {
     papelLongo: "Você é a liderança de Operações.",
     angulo:
-      "Sua área enxerga a decisão pelo mapa da operação, pelas exigências técnicas dos clientes e pelo roadmap de automação.",
+      "Sua área prioriza renovações, escala de novos produtos e capacidade reutilizável, considerando a operação, os clientes e o roadmap.",
     docs: [
-      TAREFA,
-      CURRICULOS,
+      {
+        arquivo: "Dinamica-O0-objetivos-estrategicos-de-operacoes.md",
+        descricao: "O que Operações precisa entregar e escalar em 2026.",
+      },
       {
         arquivo: "Dinamica-O1-mapa-da-operacao.md",
         descricao: "Os 14 contratos, o tamanho de cada um e os sistemas que rodam por baixo.",
@@ -116,40 +112,38 @@ export const SITUACAO = [
   "O Comitê chamou as quatro áreas — Pessoas, Financeiro, Jurídico e Operações — e fez a mesma pergunta a todas: qual dos três contratar, e por quê?",
 ];
 
-export const PASSOS = [
+export const PREPARACAO_PROJETO = [
   "Baixem e descompactem a pasta do seu grupo.",
   "Criem um projeto na ferramenta de IA indicada pelo facilitador.",
-  "Subam os 5 arquivos da pasta no projeto.",
-  "Escrevam o próprio prompt e conversem com a IA usando somente esses documentos.",
-  "Decidam em grupo, preencham a entrega e enviem o resultado nesta página.",
+  "Subam no mesmo projeto o descritivo da vaga, os 3 currículos e os 4 documentos da área.",
+  "Expliquem ao modelo que precisam avaliar quem contratar para a vaga descrita e que os três currículos são as candidaturas finalistas.",
+  "A partir daqui, o modelo conhece a vaga, os candidatos e os dados disponíveis para a sua área. O grupo decide como usar esse conhecimento.",
 ];
 
 export const ENTREGA = [
   { campo: "Candidato escolhido", instrucao: "Rafael, Aline, Juliana — ou nenhum." },
-  { campo: "Motivo", instrucao: "Em até três linhas." },
+  {
+    campo: "Resumo da recomendação",
+    instrucao: "Qualifiquem os três candidatos e resumam por que escolheram o indicado.",
+  },
   {
     campo: "O dado que sustenta",
     instrucao: "De qual documento saiu, e qual número ou trecho.",
   },
   {
-    campo: "O que ficou faltando",
-    instrucao: "Que informação vocês gostariam de ter e não têm.",
+    campo: "Perguntas que ficaram abertas",
+    instrucao: "O que a conversa revelou e que os documentos não permitem responder.",
   },
-  { campo: "Prompt", instrucao: "O prompt inteiro que o grupo usou." },
+  {
+    campo: "Racional da decisão",
+    instrucao: "Como o grupo ponderou os critérios, as tensões e as condições da escolha.",
+  },
 ];
 
 export const REGRAS_GUIA = [
   "Só os seus documentos. Nada de internet, nada de conhecimento de mercado, nada de número inventado.",
   "Toda conclusão aponta para um dado. De onde saiu.",
   "Se faltar informação, declare. Não estime.",
-];
-
-export const DICAS_PROMPT = [
-  "Diga à IA qual é o papel do seu grupo e qual decisão vocês precisam tomar.",
-  "Peça que cruze informações entre os documentos, em vez de analisar cada arquivo isoladamente.",
-  "Exija a origem de cada afirmação: documento, número ou trecho.",
-  "Defina o formato que você quer receber, como tabela, comparação ou lista de critérios.",
-  "Peça que a IA declare o que não está nos documentos e o que ainda falta saber.",
 ];
 
 export const TEMPO = "25 minutos";

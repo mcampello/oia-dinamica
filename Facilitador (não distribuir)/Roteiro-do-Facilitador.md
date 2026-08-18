@@ -5,7 +5,7 @@
 
 ## O que a dinâmica prova
 
-Quatro grupos recebem **exatamente a mesma pergunta** e **exatamente os mesmos três currículos**. O que muda entre eles é a base de conhecimento da área — três documentos que aquela diretoria teria no drive dela, e que **não foram escritos para esta decisão**.
+Quatro grupos recebem **exatamente a mesma pergunta** e **exatamente os mesmos três currículos**. O que muda entre eles é a base de conhecimento da área — os objetivos estratégicos da diretoria e três documentos que ela teria no drive, nenhum deles escrito para indicar um candidato.
 
 Nada vem mastigado. Ninguém recebe "o Rafael está fora da faixa": Pessoas recebe a tabela de faixas e o currículo, e **descobre**. Financeiro não recebe o custo dos candidatos: recebe o método de cálculo da casa, e **calcula**. Operações não recebe "a Juliana não se qualifica": recebe o edital do cliente e a escala de cada um, e **compara**.
 
@@ -17,14 +17,17 @@ Os quatro chegam a conclusões diferentes. Nenhum está errado — cada um está
 
 ## Material
 
-Cada grupo baixa **a pasta dele inteira** — já vem com os currículos dentro.
+Cada grupo baixa **o descritivo da vaga**, **os três currículos, em arquivos separados**, e **a base da sua área**, com quatro documentos. Os oito arquivos entram juntos no mesmo projeto.
+
+O documento de objetivos informa o que a área precisa otimizar. Os outros três mostram as condições reais em que ela tenta fazer isso. A combinação dá direção sem entregar uma recomendação pronta.
 
 | Pasta | O que tem |
 |---|---|
-| **Grupo 1 — Pessoas** | tarefa · currículos · quadro de pessoal e cargos · descrição do cargo e fit cultural · histórico de liderança e clima |
-| **Grupo 2 — Financeiro** | tarefa · currículos · orçamento e quadro de vagas · como se calcula o custo de um funcionário · política de aprovação de despesa |
-| **Grupo 3 — Jurídico** | tarefa · currículos · tipos de vínculo e cláusulas · mapa de contingências · verificação contratual dos candidatos |
-| **Grupo 4 — Operações** | tarefa · currículos · mapa da operação · exigências técnicas dos clientes · roadmap de automação |
+| **Grupo 1 — Pessoas** | objetivos estratégicos · quadro de pessoal e cargos · fit cultural e origem dos requisitos · histórico de liderança e clima |
+| **Grupo 2 — Financeiro** | objetivos estratégicos · orçamento e quadro de vagas · como se calcula o custo de um funcionário · política de aprovação de despesa |
+| **Grupo 3 — Jurídico** | objetivos estratégicos · tipos de vínculo e cláusulas · mapa de contingências · verificação contratual dos candidatos |
+| **Grupo 4 — Operações** | objetivos estratégicos · mapa da operação · exigências técnicas dos clientes · roadmap de automação |
+| **Comum aos grupos** | o descritivo da vaga e três currículos completos, um arquivo por finalista, baixados na página principal antes da base da área |
 | **Facilitador (não distribuir)** | este roteiro · regras e estratégia da Vértice |
 
 ---
@@ -33,8 +36,8 @@ Cada grupo baixa **a pasta dele inteira** — já vem com os currículos dentro.
 
 | Tempo | O quê |
 |---|---|
-| **5 min** | Apresenta o caso. Cada grupo cria um projeto e sobe os cinco arquivos da pasta dele. |
-| **25 min** | Os grupos escrevem o próprio prompt e decidem. Sem roteiro. Facilitadores circulam. |
+| **5 min** | Apresenta o desafio. Cada grupo baixa o descritivo e os três currículos, abre somente o próprio guia, baixa a base da área e sobe os oito arquivos no mesmo projeto. |
+| **25 min** | Os grupos investigam os candidatos em conversa com a IA, respondem a perguntas, comparam caminhos e só então recomendam quem contratar. Facilitadores circulam. |
 | **5 min** | Cada grupo anuncia em voz alta: quem escolheu e por quê. **Anote no quadro.** |
 | **10 min** | Você joga as quatro respostas + o seu arquivo de regras no seu projeto e roda o cruzamento, projetado. |
 | **10 min** | Debrief. |
@@ -50,7 +53,7 @@ Isto é o mapa do que está enterrado. Não entregue — use para calibrar as pe
 | **Pessoas** | Rafael pede 22% acima do teto da faixa | Currículo (R$ 32.000) × tabela de faixas (teto R$ 26.200) |
 | | Contratá-lo obriga a corrigir os sete gerentes atuais | Regra de enquadramento × lista dos gerentes |
 | | Quem veio do setor não ficou; quem veio de fora do setor ficou | Histórico de liderança: setor de origem × situação |
-| | O requisito de setor foi inventado pela Diretoria de Operações | Descritivo da vaga, coluna "definido por" |
+| | O requisito de setor foi acrescentado pela Diretoria de Operações | Descritivo comum × histórico interno de elaboração do requisito |
 | **Financeiro** | Rafael custa R$ 901.280, Aline R$ 678.195, Juliana R$ 565.290 | Currículos × método de cálculo |
 | | Os três passam do limite de R$ 300 mil | Cálculo × CI-2025-004 |
 | | A fonte de recurso indicada seria inválida | Política, tabela do que serve como origem |
@@ -66,74 +69,89 @@ Isto é o mapa do que está enterrado. Não entregue — use para calibrar as pe
 
 ---
 
-## Onde cada grupo deve chegar
+## Tensões que cada grupo pode explorar
 
-| Grupo | Deve escolher | Porque a base dele diz |
-|---|---|---|
-| **Operações** | **Rafael** | maior escala, conhece o setor, disponível já, e a área está com pressa |
-| **Pessoas** | **Juliana** | 4 dos 7 líderes externos saíram em menos de 18 meses; carreira é o que retém; o Rafael estoura a faixa |
-| **Jurídico** | **Aline** | é a única sem impedimento; o Rafael está travado por 8 meses |
-| **Financeiro** | **nenhum agora** | os três passam de R$ 300 mil e não há origem de recurso válida |
+Não há candidato esperado por área. Use estas tensões para destravar a investigação sem indicar uma resposta:
 
-Se algum grupo divergir, ótimo — pergunte qual dado levou até lá. É material de debrief, não erro.
+| Grupo | Tensões para investigar |
+|---|---|
+| **Operações** | velocidade × arquitetura sustentável · escala anterior × conhecimento do setor · prazo alegado × prazo contratual |
+| **Pessoas** | desenvolvimento interno × prontidão · aderência cultural × domínio técnico · equidade salarial × criação de uma função nova |
+| **Jurídico** | impedimento imediato × contratação condicionada · risco de esperar × risco de negociar · vínculo permanente × apoio pontual |
+| **Financeiro** | falta de verba aprovada × custo da espera · gasto do primeiro ano × compromisso recorrente · caixa disponível × fonte formal |
+
+Se o grupo chegar rápido demais a um nome, pergunte: *“qual hipótese vocês trataram como fato?”*, *“o que faria essa recomendação mudar?”* e *“qual alternativa vocês descartaram sem comparar?”*
 
 ---
 
 ## O prompt de cruzamento
 
-Cole no seu projeto, com as quatro respostas e o arquivo de regras dentro dele.
+No projeto do agente de alinhamento, adicione o descritivo da vaga, os três arquivos de currículo e o arquivo de regras e estratégia. As quatro respostas dos grupos já vêm incorporadas ao prompt gerado na tela da turma no painel administrativo.
 
 ```
-Você tem quatro documentos com a recomendação de quatro áreas da Vértice
-sobre a mesma contratação, e um documento com as regras e a direção
-estratégica da empresa que nenhuma das áreas conhecia.
+Você é o agente de alinhamento do Comitê Executivo da Vértice.
 
-Cada área respondeu com base apenas na base de conhecimento dela.
+No projeto estão cinco arquivos de conhecimento:
+- o descritivo da vaga de Head de Automação e Inteligência Artificial, fonte do objetivo, das responsabilidades e dos requisitos da contratação;
+- os três currículos completos, um de Rafael, um de Aline e um de Juliana, fonte dos fatos sobre os candidatos;
+- as regras e a direção estratégica da Vértice, camada de decisão que nenhuma área conhecia.
 
-1. MAPA — para cada área: quem ela escolheu, o argumento central,
-   e qual informação ela NÃO tinha e que teria mudado a resposta dela.
+Abaixo estão as recomendações das quatro áreas. Cada uma respondeu usando apenas os
+currículos e a própria base de conhecimento. Trate essas respostas como leituras parciais,
+não como uma nova fonte de fatos. Quando houver conflito, confira os currículos e aplique
+as regras estratégicas.
 
-2. CHOQUES — onde as áreas se contradizem. Para cada contradição,
-   diga qual das duas se sustenta quando as regras da empresa entram,
-   e por quê.
+Conduza o trabalho em três rodadas e respeite os bloqueios entre elas.
 
-3. CADA CANDIDATO CONTRA AS REGRAS — passe Rafael, Aline e Juliana por
-   todas as regras do documento estratégico. Diga o que elimina cada um,
-   citando a regra.
+RODADA 1 — ENTREVISTA (comece aqui)
 
-4. O ENCAMINHAMENTO — proponha a decisão que aproveita o que há de
-   legítimo nas quatro leituras. Mostre explicitamente qual pedaço de
-   qual área sobreviveu em cada parte da proposta.
+Sua primeira resposta deve conter SOMENTE UMA PERGUNTA ao facilitador.
+Não apresente introdução, mapa, resumo, análise, comparação, alternativa,
+mérito ou problema de qualquer candidato. Não diga quem parece melhor.
 
-5. O QUE NINGUÉM VIU — o que só apareceu porque as quatro leituras
-   e as regras estavam na mesma mesa.
+Depois de cada resposta do facilitador, faça somente a próxima pergunta.
+Priorize perguntas cuja resposta poderia mudar a decisão. Faça no máximo
+cinco perguntas, uma por mensagem, e aguarde cada resposta.
+
+Não avance até o facilitador escrever exatamente: PODE MAPEAR.
+
+RODADA 2 — MAPA (somente depois de PODE MAPEAR)
+
+1. Mostre os argumentos, pressupostos e informações ausentes de cada área.
+2. Identifique choques sem escolher automaticamente um lado.
+3. Apresente pelo menos duas alternativas defensáveis, com condições e riscos.
+4. Termine com o que ainda precisaria ser respondido.
+
+Não recomende uma decisão. Aguarde o facilitador escrever exatamente:
+PODE RECOMENDAR.
+
+RODADA 3 — RECOMENDAÇÃO (somente depois de PODE RECOMENDAR)
+
+1. Registre quais perguntas foram respondidas e quais continuam abertas.
+2. Compare candidatos e eventuais soluções em fases contra os documentos.
+3. Recomende um encaminhamento, explicitando pressupostos e condições.
+4. Mostre uma alternativa e qual informação faria a recomendação mudar.
+5. Explique o que surgiu apenas ao juntar as quatro leituras e as regras.
 
 Regras: não invente dado. Se algo não está nos documentos, diga que não
-está. Cite a origem de cada afirmação.
+está. Diferencie fato do currículo, leitura da área e regra estratégica.
+Cite a origem de cada afirmação.
 ```
 
 ---
 
-## Onde o cruzamento deve chegar
+## O que um bom cruzamento deve produzir
 
-**Contratar a Aline.** Com a **Juliana como número 2** da frente, com plano de desenvolvimento e prazo. Custeada pela **verba livre de R$ 700 mil**. E **Rafael arquivado com data** — reabrir em novembro, quando a cláusula caducar, se ainda fizer sentido.
+Não há um nome obrigatório escondido nas regras. O fechamento é bom quando:
 
-Os quatro grupos sobrevivem na resposta:
+- distingue restrição, preferência, hipótese e informação ausente;
+- faz perguntas que poderiam realmente mudar a escolha;
+- compara pelo menos duas soluções plausíveis, inclusive soluções em fases;
+- mostra o custo, o risco e as condições de cada caminho;
+- preserva contribuições legítimas das quatro áreas sem decidir por votação;
+- declara o que permanece incerto em vez de transformar ausência de dado em certeza.
 
-| Contribuição | Veio de | Como sobreviveu |
-|---|---|---|
-| Aline não tem impedimento | Jurídico | virou a escolha |
-| A escala exigida é 300+ postos | Operações | eliminou a Juliana do cargo, não do plano |
-| O time precisa ver gente crescendo | Pessoas | virou o número 2 |
-| Não dá para gastar sem origem válida | Financeiro | a verba livre resolveu, sem depender do cliente |
-
-**E nenhum dos quatro tinha proposto isso.**
-
-### O que as suas regras fazem com cada candidato
-
-- **Rafael** cai duas vezes: impedimento contratual vigente, e o plano de correção salarial de R$ 312 mil que a contratação acima da faixa dispara — o que leva o custo real dele para cerca de R$ 1,2 milhão, muito além da verba disponível.
-- **Juliana** cai como titular: não se promove para uma frente oito vezes maior. Mas a mesma regra prevê o caminho — número 2, com plano.
-- **Aline** passa em todas. E o objetivo de 2028 desmonta a objeção que a rebaixou: a frente é fundação, não é atendimento a um cliente. Conhecer o setor pesa menos do que já ter automatizado em escala.
+Alguns caminhos que podem aparecer — sem obrigação de escolher nenhum deles — são contratação externa com desenvolvimento interno, liderança interna por etapas, contratação condicionada ou reabertura do processo. O valor do exercício está na qualidade dos pressupostos e das perguntas, não em chegar a um gabarito.
 
 ---
 
@@ -158,7 +176,7 @@ A pergunta que fecha: **"o que mudou? Não foi você."**
 
 ## Riscos da dinâmica
 
-- **Grupo que trava no prompt.** O facilitador não dá o prompt. Dá uma pergunta: *"vocês pediram para ela cruzar o currículo com a sua tabela?"* ou *"vocês disseram em que formato querem a resposta?"*
+- **Grupo que envia só uma saudação ou trava no prompt.** Leve-o às orientações da tela. O facilitador não dá o prompt; pergunta: *"qual tensão vocês querem investigar?"*, *"o que os documentos não respondem?"* ou *"que pergunta faria vocês mudarem de ideia?"*
 - **Grupo que só resume os documentos.** É o erro mais comum quando a base é grande. A pergunta de destrave: *"resumir não decide. O que vocês precisam saber para escolher, e onde isso estaria?"*
-- **Grupo que decide de cabeça, sem usar a IA.** Insista que a entrega inclui o prompt: sem prompt, não vale.
+- **Grupo que decide de cabeça, sem usar a IA.** Peça que registre o racional: quais critérios pesaram, quais tensões foram discutidas e o que faria a decisão mudar.
 - **Convergência inesperada.** Se dois grupos escolherem o mesmo candidato, use os *motivos* diferentes no lugar dos nomes. Funciona igual.

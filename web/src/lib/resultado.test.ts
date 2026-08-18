@@ -11,7 +11,7 @@ const VALIDO: ValoresResultado = {
   motivo: "motivo",
   dado: "dado",
   faltou: "faltou",
-  prompt: "prompt",
+  racional: "racional",
 };
 
 describe("validarValoresResultado", () => {
@@ -19,7 +19,7 @@ describe("validarValoresResultado", () => {
     expect(validarValoresResultado(VALIDO)).toBeNull();
   });
 
-  it.each(["candidato", "motivo", "dado", "faltou", "prompt"] as const)(
+  it.each(["candidato", "motivo", "dado", "faltou", "racional"] as const)(
     "rejeita %s vazio",
     (campo) => {
       expect(validarValoresResultado({ ...VALIDO, [campo]: "   " })).toBe("campos");
@@ -33,7 +33,7 @@ describe("validarValoresResultado", () => {
         motivo: "m".repeat(LIMITES_RESULTADO.motivo),
         dado: "d".repeat(LIMITES_RESULTADO.dado),
         faltou: "f".repeat(LIMITES_RESULTADO.faltou),
-        prompt: "p".repeat(LIMITES_RESULTADO.prompt),
+        racional: "r".repeat(LIMITES_RESULTADO.racional),
       }),
     ).toBeNull();
   });
@@ -53,14 +53,14 @@ describe("lerValoresResultado", () => {
     formData.set("motivo", motivo);
     formData.set("dado", " dado ");
     formData.set("faltou", " faltou ");
-    formData.set("prompt", " prompt ");
+    formData.set("racional", " racional ");
 
     expect(lerValoresResultado(formData)).toEqual({
       candidato: "juliana",
       motivo,
       dado: " dado ",
       faltou: " faltou ",
-      prompt: " prompt ",
+      racional: " racional ",
     });
   });
 });

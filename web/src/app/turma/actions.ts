@@ -43,7 +43,7 @@ export async function enviarResultado(
     motivo: valores.motivo.trim(),
     dado: valores.dado.trim(),
     faltou: valores.faltou.trim(),
-    prompt: valores.prompt.trim(),
+    racional: valores.racional.trim(),
   };
   const { data: resultado, error } = await db()
     .rpc("registrar_envio", {
@@ -53,11 +53,19 @@ export async function enviarResultado(
       p_motivo: valoresPersistidos.motivo,
       p_dado: valoresPersistidos.dado,
       p_faltou: valoresPersistidos.faltou,
-      p_prompt: valoresPersistidos.prompt,
+      p_racional: valoresPersistidos.racional,
     })
     .returns<ResultadoRegistro[]>()
     .single();
-  if (error || !resultado) return responderErro("envio");
+  if (error || !resultado) {
+    console.error("Falha ao registrar resultado da turma", error && {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+    });
+    return responderErro("envio");
+  }
   if (resultado.status === "encerrada") redirect("/?motivo=encerrada");
   if (resultado.status === "fechados") return responderErro("fechados");
   if (

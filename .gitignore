@@ -1,3 +1,10 @@
 .DS_Store
 .context/
+web/supabase/.temp/
 downloads/
+!web/public/downloads/
+!web/public/downloads/Curriculo-1-Rafael-DAvila.md
+!web/public/downloads/Curriculo-2-Aline-Ferraz.md
+!web/public/downloads/Curriculo-3-Juliana-Setubal.md
+!web/public/downloads/Descritivo-da-vaga-Head-de-Automacao-e-IA.md
+!web/public/downloads/Regras-e-Estrategia-da-Vertice.md

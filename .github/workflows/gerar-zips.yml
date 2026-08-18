@@ -24,5 +24,6 @@ jobs:
           gh release view downloads >/dev/null 2>&1 || \
             gh release create downloads --latest \
               --title "Downloads dos grupos" \
-              --notes "ZIPs de cada grupo, regenerados automaticamente a cada mudança na main. Use os links do README."
-          gh release upload downloads downloads/*.zip --clobber
+              --notes "Bases de conhecimento dos grupos e currículos, regenerados automaticamente a cada mudança na main. Use os links do README."
+          gh release delete-asset downloads Dinamica-Curriculos-dos-tres-finalistas.md -y >/dev/null 2>&1 || true
+          gh release upload downloads downloads/* --clobber

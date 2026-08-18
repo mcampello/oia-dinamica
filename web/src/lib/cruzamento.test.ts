@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { quantidadeGruposComEnvio, vigentes } from "./cruzamento";
+import { montarPromptCruzamento, quantidadeGruposComEnvio, vigentes } from "./cruzamento";
 import type { Envio } from "./supabase";
 
 function envio(id: string, grupo: number, created_at: string): Envio {
@@ -11,7 +11,7 @@ function envio(id: string, grupo: number, created_at: string): Envio {
     motivo: "motivo",
     dado: "dado",
     faltou: "faltou",
-    prompt: "prompt",
+    racional: "racional",
     created_at,
   };
 }
@@ -38,5 +38,25 @@ describe("quantidadeGruposComEnvio", () => {
         envio("c", 3, "2026-08-18T12:00:00.000Z"),
       ]),
     ).toBe(2);
+  });
+});
+
+describe("montarPromptCruzamento", () => {
+  it("inclui o envio vigente e identifica os grupos ainda ausentes", () => {
+    const antigo = envio("antigo", 1, "2026-08-18T10:00:00.000Z");
+    antigo.motivo = "resposta antiga";
+    const recente = envio("recente", 1, "2026-08-18T11:00:00.000Z");
+    recente.motivo = "resposta vigente";
+
+    const resultado = montarPromptCruzamento([antigo, recente]);
+
+    expect(resultado.texto).toContain("Você é o agente de alinhamento");
+    expect(resultado.texto).toContain("descritivo da vaga");
+    expect(resultado.texto).toContain("SOMENTE UMA PERGUNTA");
+    expect(resultado.texto).toContain("PODE MAPEAR");
+    expect(resultado.texto).toContain("PODE RECOMENDAR");
+    expect(resultado.texto).toContain("resposta vigente");
+    expect(resultado.texto).not.toContain("resposta antiga");
+    expect(resultado.gruposSemEnvio).toEqual([2, 3, 4]);
   });
 });

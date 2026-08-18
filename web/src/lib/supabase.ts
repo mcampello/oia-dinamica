@@ -18,7 +18,7 @@ export type Envio = {
   motivo: string;
   dado: string;
   faltou: string;
-  prompt: string;
+  racional: string;
   created_at: string;
 };
 
