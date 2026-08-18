@@ -1,0 +1,28 @@
+name: Gerar ZIPs dos grupos
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  zips:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Gerar ZIPs
+        run: ./ferramentas/gerar-zips.sh
+
+      - name: Publicar na release "downloads"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view downloads >/dev/null 2>&1 || \
+            gh release create downloads --latest \
+              --title "Downloads dos grupos" \
+              --notes "ZIPs de cada grupo, regenerados automaticamente a cada mudança na main. Use os links do README."
+          gh release upload downloads downloads/*.zip --clobber
