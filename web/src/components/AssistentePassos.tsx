@@ -74,9 +74,9 @@ export default function AssistentePassos({ etapas, passoInicial, children }: Pro
             Próximo →
           </button>
         ) : (
-          <a href="#resultado" className="btn-roxo">
+          <button type="button" className="btn-roxo" popoverTarget="resultado">
             Preencher o formulário →
-          </a>
+          </button>
         )}
       </div>
     </>

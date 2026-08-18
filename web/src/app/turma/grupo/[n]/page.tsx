@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { enviarResultado } from "@/app/turma/actions";
 import AssistentePassos from "@/components/AssistentePassos";
+import FormularioResultado from "@/components/FormularioResultado";
 import { db } from "@/lib/supabase";
 import { sessaoTurma } from "@/lib/session";
-import { CANDIDATOS, GRUPOS, isNumeroGrupo } from "@/lib/grupos";
+import { GRUPOS, isNumeroGrupo } from "@/lib/grupos";
 import { obterMarca } from "@/lib/marcas";
 import {
   DICAS_PROMPT,
@@ -73,8 +73,8 @@ export default async function PaginaGrupo({
         </Link>
       </header>
 
-      <main className="miolo miolo-amplo">
-        <div className="duas-colunas sobe">
+      <main className="miolo">
+        <div className="sobe">
           <section className="coluna-passos">
             <span className="pd-seal">
               {g.nome} — {g.papel}
@@ -162,12 +162,10 @@ export default async function PaginaGrupo({
                   ))}
                 </ol>
                 <p><strong>Tempo: {TEMPO}.</strong></p>
-                <a href="#resultado" className="aponta-lado">
+                <button type="button" className="aponta-lado aponta-botao" popoverTarget="resultado">
                   Preencham o formulário
-                  <span className="so-desktop"> ao lado</span>
-                  <span className="so-mobile"> abaixo</span>
                   {SETA_DIREITA}
-                </a>
+                </button>
               </div>
             </AssistentePassos>
             <p className="meta">
@@ -175,92 +173,14 @@ export default async function PaginaGrupo({
             </p>
           </section>
 
-          <aside className="coluna-lateral coluna-fixa" id="resultado">
-            <div className="bloco-envio">
-              <div className="secao-cabeca">
-                <h2>O que entregar</h2>
-                <span className="meta">Reenviou? Vale o mais recente.</span>
-              </div>
-
-              {enviado === "1" && (
-                <p className="aviso aviso-ok">
-                  Resultado do {g.nome} — {g.papel} recebido.
-                </p>
-              )}
-              {erro === "campos" && (
-                <p className="aviso aviso-erro">Preencha todos os campos — inclusive o prompt.</p>
-              )}
-              {erro === "envio" && (
-                <p className="aviso aviso-erro">Não foi possível gravar. Tente de novo.</p>
-              )}
-
-              <form action={enviarResultado} className="form-envio">
-                <input type="hidden" name="grupo" value={numero} />
-                <input type="hidden" name="origem" value="grupo" />
-
-              <div className="campo campo-cheio">
-                <label>Candidato escolhido</label>
-                <div className="opcoes" style={{ paddingTop: 7 }}>
-                  {Object.entries(CANDIDATOS).map(([valor, nome]) => (
-                    <label key={valor} className="opcao">
-                      <input type="radio" name="candidato" value={valor} required />
-                      {nome}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="motivo">Motivo</label>
-                <textarea
-                  id="motivo"
-                  name="motivo"
-                  placeholder="Em até três linhas."
-                  required
-                />
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="dado">O dado que sustenta</label>
-                <textarea
-                  id="dado"
-                  name="dado"
-                  placeholder="De qual documento saiu, e qual número ou trecho."
-                  required
-                />
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="faltou">O que ficou faltando</label>
-                <textarea
-                  id="faltou"
-                  name="faltou"
-                  placeholder="Que informação vocês gostariam de ter e não têm."
-                  required
-                />
-              </div>
-
-              <div className="campo campo-cheio">
-                <label htmlFor="prompt">O prompt que vocês usaram</label>
-                <textarea
-                  id="prompt"
-                  name="prompt"
-                  style={{ minHeight: 90 }}
-                  placeholder="Cole o prompt inteiro. Ele entra no fechamento — sem prompt, não vale."
-                  required
-                />
-              </div>
-
-              <div className="linha-acao">
-                <button type="submit" className="btn-roxo">
-                  Enviar resultado
-                </button>
-                <span className="nota">Todos os campos apontam para os seus documentos.</span>
-              </div>
-              </form>
-            </div>
-          </aside>
         </div>
+        <FormularioResultado
+          numeroGrupo={numero}
+          nomeGrupo={g.nome}
+          papelGrupo={g.papel}
+          enviado={enviado}
+          erro={erro}
+        />
       </main>
 
       <footer className="pd-rule rodape">
