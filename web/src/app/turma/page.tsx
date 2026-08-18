@@ -1,19 +1,20 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { sessaoTurma } from "@/lib/session";
-import { db, type Envio, type Turma } from "@/lib/supabase";
-import { CANDIDATOS, GRUPOS, NUMEROS_GRUPO } from "@/lib/grupos";
-import { horaCurta } from "@/lib/data";
+import { db, type Turma } from "@/lib/supabase";
+import { GRUPOS, NUMEROS_GRUPO } from "@/lib/grupos";
 import { obterMarca } from "@/lib/marcas";
 import { sairDaTurma } from "./actions";
 
 export const dynamic = "force-dynamic";
 
 const SETA_DIREITA = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden>
+  <svg className="trilha-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden>
     <path d="M5 12h14m0 0l-5-5m5 5l-5 5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
+
+const ETAPAS = ["Escolha seu grupo", "Baixe e converse com a IA", "Enviem o resultado"];
 
 export default async function PaginaTurma() {
   const turmaId = await sessaoTurma();
@@ -29,10 +30,8 @@ export default async function PaginaTurma() {
 
   const { data: envios } = await db()
     .from("envios")
-    .select("*")
-    .eq("turma_id", turmaId)
-    .order("created_at", { ascending: false })
-    .returns<Envio[]>();
+    .select("grupo")
+    .eq("turma_id", turmaId);
 
   const gruposComEnvio = new Set((envios ?? []).map((e) => e.grupo));
 
@@ -51,81 +50,67 @@ export default async function PaginaTurma() {
         </div>
       </header>
 
-      <main className="miolo">
-        <section className="secao sobe" style={{ marginTop: "var(--gap-5)" }}>
-          <span className="pd-seal">{turma.nome}</span>
-          <h2>A mesma decisão, quatro bases de conhecimento</h2>
-          <p style={{ maxWidth: "62ch" }}>
-            A Vértice vai contratar um Head de Automação e IA. Três finalistas, decisão
-            em 5 dias. Cada grupo é uma área da empresa e responde à mesma pergunta:
-            qual dos três contratar, e por quê?
-          </p>
-          <ol className="regras">
-            <li>Só os seus documentos. Nada de internet, nada de conhecimento de mercado.</li>
-            <li>Toda conclusão aponta para um dado, com origem.</li>
-            <li>Informação que falta se declara — não se estima.</li>
-          </ol>
-        </section>
+      <main className="miolo miolo-amplo">
+        <div className="duas-colunas sobe">
+          <section className="coluna-passos">
+            <span className="pd-seal">{turma.nome}</span>
+            <h2>A mesma decisão, quatro bases de conhecimento</h2>
+            <p>
+              A Vértice vai contratar um Head de Automação e IA. Três finalistas, decisão
+              em 5 dias. Cada grupo é uma área da empresa e responde à mesma pergunta:
+              qual dos três contratar, e por quê?
+            </p>
+            <div className="trilha-passos" aria-label="Como funciona">
+              {ETAPAS.map((etapa, indice) => (
+                <span key={etapa} className="trilha-item">
+                  {indice > 0 && SETA_DIREITA}
+                  <span className="trilha-passo">
+                    <span className="passo-num">{indice + 1}</span>
+                    {etapa}
+                  </span>
+                </span>
+              ))}
+            </div>
+            <ol className="regras">
+              <li>Só os seus documentos. Nada de internet, nada de conhecimento de mercado.</li>
+              <li>Toda conclusão aponta para um dado, com origem.</li>
+              <li>Informação que falta se declara — não se estima.</li>
+            </ol>
+            <p className="aponta-lado">
+              Comece escolhendo o cartão do seu grupo
+              <span className="so-desktop"> ao lado</span>
+              <span className="so-mobile"> abaixo</span>
+              {SETA_DIREITA}
+            </p>
+          </section>
 
-        <section className="secao">
-          <div className="secao-cabeca">
-            <h2>Abra a tarefa do seu grupo</h2>
+          <aside className="coluna-lateral">
+            <div className="secao-cabeca">
+              <h2>Abra a tarefa do seu grupo</h2>
+            </div>
             <span className="meta">
               Entre só na do seu grupo — abrir a de outro estraga a dinâmica.
             </span>
-          </div>
-          <div className="grade-grupos">
-            {NUMEROS_GRUPO.map((n) => {
-              const g = GRUPOS[n];
-              return (
-                <Link href={`/turma/grupo/${n}`} key={n} className="bloco bloco-link sobe">
-                  <span className="papel">{g.nome}</span>
-                  <h3>{g.papel}</h3>
-                  <span className="docs">tarefa · currículos · {g.docs}</span>
-                  <div className="bloco-acao">
-                    <span className="btn-baixar">
-                      Ver a tarefa do grupo {SETA_DIREITA}
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="secao">
-          <div className="secao-cabeca">
-            <h2>Envios da turma</h2>
-            <span className="meta">
-              {gruposComEnvio.size} de 4 grupos enviaram
-            </span>
-          </div>
-          {(envios ?? []).length === 0 ? (
-            <p className="meta">Nenhum envio ainda. O primeiro aparece aqui.</p>
-          ) : (
-            <div className="tabela">
-              <div className="th cols-envios">
-                <span>Grupo</span>
-                <span>Candidato</span>
-                <span style={{ textAlign: "right" }}>Hora</span>
-              </div>
-              {(envios ?? []).map((e) => {
-                const g = GRUPOS[e.grupo as 1 | 2 | 3 | 4];
+            <div className="grade-grupos grade-grupos-coluna">
+              {NUMEROS_GRUPO.map((n) => {
+                const g = GRUPOS[n];
                 return (
-                  <div key={e.id} className="tr cols-envios">
-                    <span className="label" style={{ color: "var(--on-dark-1)" }}>
-                      {g.nome} — {g.papel}
-                    </span>
-                    <span className="estado">{CANDIDATOS[e.candidato] ?? e.candidato}</span>
-                    <span className="meta" style={{ textAlign: "right" }}>
-                      {horaCurta(e.created_at)}
-                    </span>
-                  </div>
+                  <Link href={`/turma/grupo/${n}`} key={n} className="bloco bloco-link">
+                    <span className="papel">{g.nome}</span>
+                    <h3>{g.papel}</h3>
+                    <span className="docs">tarefa · currículos · {g.docs}</span>
+                    <div className="bloco-acao">
+                      <span className="btn-baixar">
+                        Ver a tarefa do grupo {SETA_DIREITA}
+                      </span>
+                    </div>
+                  </Link>
                 );
               })}
             </div>
-          )}
-        </section>
+            <p className="meta resumo-envios">{gruposComEnvio.size} de 4 grupos enviaram</p>
+          </aside>
+        </div>
       </main>
 
       <footer className="pd-rule rodape">
