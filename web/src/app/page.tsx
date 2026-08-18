@@ -1,11 +1,11 @@
-import { entrarNaTurma } from "./actions";
+import FormularioEntrada from "@/components/FormularioEntrada";
 
 export default async function Entrada({
   searchParams,
 }: {
-  searchParams: Promise<{ erro?: string }>;
+  searchParams: Promise<{ motivo?: string }>;
 }) {
-  const { erro } = await searchParams;
+  const { motivo } = await searchParams;
 
   return (
     <div className="pagina-escura">
@@ -27,31 +27,12 @@ export default async function Entrada({
             mesma pergunta e os mesmos três currículos. O que muda é o que cada uma
             sabe.
           </p>
-          <form action={entrarNaTurma} className="form-codigo">
-            <div className="campo">
-              <label htmlFor="codigo">Código da turma</label>
-              <input
-                id="codigo"
-                name="codigo"
-                className="input-codigo"
-                placeholder="OIA-XXXX"
-                autoComplete="off"
-                autoFocus
-                required
-              />
-              <span className="ajuda">O facilitador entrega o código na sala.</span>
-            </div>
-            {erro && (
-              <p className="aviso aviso-erro">
-                Código não encontrado ou turma encerrada. Confira com o facilitador.
-              </p>
-            )}
-            <div>
-              <button type="submit" className="pd-btn">
-                Entrar
-              </button>
-            </div>
-          </form>
+          {motivo === "encerrada" && (
+            <p className="aviso aviso-erro" role="alert">
+              O facilitador encerrou esta turma. Os resultados continuam salvos.
+            </p>
+          )}
+          <FormularioEntrada />
         </section>
       </main>
 

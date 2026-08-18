@@ -111,6 +111,10 @@
 .campo select { appearance: none; cursor: pointer; }
 .campo select option { background: var(--surface-menu); }
 .campo .ajuda { font-size: var(--text-meta); color: var(--on-dark-3); }
+.campo-rotulo { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.contador-caracteres { font-size: var(--text-meta); color: var(--on-dark-3); font-variant-numeric: tabular-nums; }
+.form-envio[aria-disabled="true"] { opacity: 0.72; }
+.form-envio textarea[readonly] { cursor: default; }
 
 .input-codigo {
   font-size: var(--text-section) !important;
@@ -153,6 +157,7 @@
   transition: background 180ms var(--ease-soft);
 }
 .btn-roxo:hover { background: var(--pd-violet); }
+.btn-roxo:disabled, .pd-btn:disabled { opacity: 0.55; cursor: wait; }
 a.btn-roxo, a.btn-fio-escuro { text-decoration: none; }
 
 .btn-baixar {
@@ -473,12 +478,89 @@ a.bloco-link:focus-visible {
 .regime-papel .tabela .tr { border-bottom-color: var(--rule-paper); }
 .regime-papel .tabela .th { color: var(--on-paper-3); }
 .regime-papel .tabela .tr:hover { background: rgba(22,16,24,0.03); }
-.cols-turmas { grid-template-columns: 1.6fr 1fr 0.8fr 0.9fr 150px; }
+.cols-turmas { grid-template-columns: 1.4fr 0.85fr 0.55fr 0.75fr 210px; }
 
 .regime-papel .estado { color: var(--on-paper-2); }
 .regime-papel .estado::before { background: var(--pd-purple); }
 .regime-papel .estado.mudo { color: var(--on-paper-3); }
 .regime-papel .estado.mudo::before { background: rgba(22,16,24,0.22); }
+
+.acoes-topo, .acoes-turma, .estados-turma {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.controles-turma { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.estados-turma { justify-content: flex-end; }
+.acoes-turma { justify-content: flex-end; }
+.acoes-turma button:disabled { opacity: 0.5; cursor: wait; }
+.painel-controles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-4);
+  padding-bottom: var(--gap-4);
+  border-bottom: 1px solid var(--rule-paper);
+}
+
+/* ---------- Modo projeção ---------- */
+.pagina-projecao {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  color: var(--on-dark-1);
+  background: var(--light-corner), var(--pd-bg);
+}
+.projecao-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px 40px;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--on-dark-3);
+  font-size: clamp(16px, 2vw, 24px);
+}
+.projecao-topo .logo { max-width: 180px; max-height: 44px; object-fit: contain; }
+.projecao-miolo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(18px, 4vh, 42px);
+  padding: 40px;
+  text-align: center;
+}
+.projecao-rotulo {
+  color: var(--pd-lilac);
+  font-size: clamp(16px, 2vw, 26px);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.projecao-codigo {
+  color: var(--on-dark-1);
+  font-size: clamp(60px, 14vw, 180px);
+  line-height: 0.95;
+  letter-spacing: 0.06em;
+}
+.projecao-progresso { display: flex; align-items: baseline; gap: 16px; color: var(--on-dark-2); }
+.projecao-progresso strong { color: var(--on-dark-1); font-size: clamp(52px, 8vw, 110px); line-height: 1; }
+.projecao-progresso span { font-size: clamp(20px, 3vw, 38px); }
+.projecao-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--on-dark-3);
+  font-size: clamp(16px, 2vw, 26px);
+}
+.projecao-estado::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--on-dark-3); }
+.projecao-estado.ativo { color: var(--pd-lilac); }
+.projecao-estado.ativo::before { background: var(--pd-lilac); box-shadow: 0 0 18px var(--pd-lilac); }
 
 /* Blocos sobre papel (mosaico) */
 .bloco-branco {
@@ -565,7 +647,12 @@ a.bloco-link:focus-visible {
   .form-envio { grid-template-columns: 1fr; }
   .cols-docs { grid-template-columns: 1fr; gap: 4px !important; }
   .tabela .th.cols-docs { display: none; }
-  .cols-turmas { grid-template-columns: 1.4fr 1fr 120px; }
+  .cols-turmas { grid-template-columns: 1.4fr 1fr 160px; }
   .cols-turmas .oculta-mobile { display: none; }
+  .painel-controles { align-items: flex-start; flex-direction: column; }
+  .painel-controles .controles-turma { align-items: flex-start; }
+  .painel-controles .estados-turma, .painel-controles .acoes-turma { justify-content: flex-start; }
+  .projecao-topo { padding: 20px; }
+  .projecao-miolo { padding: 24px; }
   .entrada-miolo { padding-top: 5vh; }
 }
