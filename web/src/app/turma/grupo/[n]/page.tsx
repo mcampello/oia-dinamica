@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { enviarResultado } from "@/app/turma/actions";
+import AssistentePassos from "@/components/AssistentePassos";
 import { db } from "@/lib/supabase";
 import { sessaoTurma } from "@/lib/session";
 import { CANDIDATOS, GRUPOS, isNumeroGrupo } from "@/lib/grupos";
@@ -22,6 +23,19 @@ const SETA_BAIXO = (
     <path d="M12 4v13m0 0l-5-5m5 5l5-5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
+
+const SETA_DIREITA = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden>
+    <path d="M5 12h14m0 0l-5-5m5 5l-5 5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const ETAPAS = [
+  { id: "situacao", titulo: "Entenda a situação" },
+  { id: "material", titulo: "Baixe o material" },
+  { id: "ia", titulo: "Converse com a IA" },
+  { id: "envio", titulo: "Decidam e enviem" },
+];
 
 export default async function PaginaGrupo({
   params,
@@ -59,113 +73,130 @@ export default async function PaginaGrupo({
         </Link>
       </header>
 
-      <main className="miolo">
-        <section className="secao sobe" style={{ marginTop: "var(--gap-5)" }}>
-          <span className="pd-seal">
-            {g.nome} — {g.papel}
-          </span>
-          <h1>A situação</h1>
-          {SITUACAO.map((paragrafo) => (
-            <p key={paragrafo} style={{ maxWidth: "72ch" }}>
-              {paragrafo}
-            </p>
-          ))}
-          <p style={{ maxWidth: "72ch" }}>
-            <strong>{guia.papelLongo}</strong> {guia.angulo}
-          </p>
-          <p className="meta">
-            Você não precisa ser desta área — os documentos falam por si, em português
-            comum.
-          </p>
-        </section>
-
-        <section className="secao">
-          <h2>O que vocês têm no projeto</h2>
-          <div className="tabela">
-            <div className="th cols-docs">
-              <span>Arquivo</span>
-              <span>O que é</span>
-            </div>
-            {guia.docs.map((doc) => (
-              <div className="tr cols-docs" key={doc.arquivo}>
-                <code className="arquivo-doc">{doc.arquivo}</code>
-                <span>
-                  {doc.descricao}
-                  {doc.igualParaTodos && (
-                    <span className="meta"> Igual para todos os grupos.</span>
-                  )}
-                </span>
+      <main className="miolo miolo-amplo">
+        <div className="duas-colunas sobe">
+          <section className="coluna-passos">
+            <span className="pd-seal">
+              {g.nome} — {g.papel}
+            </span>
+            <h1>Guia do grupo</h1>
+            <AssistentePassos etapas={ETAPAS} passoInicial={enviado || erro ? 4 : 1}>
+              <div>
+                <h2>Entenda a situação</h2>
+                {SITUACAO.map((paragrafo) => (
+                  <p key={paragrafo}>{paragrafo}</p>
+                ))}
+                <p>
+                  <strong>{guia.papelLongo}</strong> {guia.angulo}
+                </p>
+                <p className="meta">
+                  Você não precisa ser desta área — os documentos falam por si, em português
+                  comum.
+                </p>
               </div>
-            ))}
-          </div>
-          <p className="meta">
-            Esses documentos são a base de conhecimento da sua área. Nada aqui está
-            mastigado: o que vocês precisarem concluir, terão de tirar dos documentos.
-          </p>
-        </section>
 
-        <section className="secao">
-          <h2>Como fazer</h2>
-          <ol className="regras">
-            {PASSOS.map((passo) => (
-              <li key={passo}>{passo}</li>
-            ))}
-          </ol>
-          <div>
-            <a className="btn-baixar" href={`/downloads/${g.zip}`} download>
-              Baixar material (.zip) {SETA_BAIXO}
-            </a>
-          </div>
-        </section>
-
-        <section className="secao">
-          <h2>Como conversar com a IA</h2>
-          <ul className="dicas-guia">
-            {DICAS_PROMPT.map((dica) => (
-              <li key={dica}>{dica}</li>
-            ))}
-          </ul>
-          <p className="meta">O prompt é de vocês — não existe roteiro pronto.</p>
-        </section>
-
-        <section className="secao" id="resultado">
-          <div className="secao-cabeca">
-            <h2>O que entregar</h2>
-            <span className="meta">Reenviou? Vale o mais recente.</span>
-          </div>
-          <p>
-            Escolham um dos três candidatos e digam por quê. Se concluírem que nenhum deve
-            ser contratado agora, digam isso e expliquem o encaminhamento.
-          </p>
-          <div className="tabela">
-            <div className="th cols-docs">
-              <span>Campo</span>
-              <span>O que preencher</span>
-            </div>
-            {ENTREGA.map((item) => (
-              <div className="tr cols-docs" key={item.campo}>
-                <span className="label">{item.campo}</span>
-                <span>{item.instrucao}</span>
+              <div>
+                <h2>Baixe o material</h2>
+                <div className="tabela">
+                  <div className="th cols-docs">
+                    <span>Arquivo</span>
+                    <span>O que é</span>
+                  </div>
+                  {guia.docs.map((doc) => (
+                    <div className="tr cols-docs" key={doc.arquivo}>
+                      <code className="arquivo-doc">{doc.arquivo}</code>
+                      <span>
+                        {doc.descricao}
+                        {doc.igualParaTodos && (
+                          <span className="meta"> Igual para todos os grupos.</span>
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <p className="meta">
+                  Esses documentos são a base de conhecimento da sua área. O que precisarem
+                  concluir terá de sair deles.
+                </p>
+                <a className="btn-baixar" href={`/downloads/${g.zip}`} download>
+                  Baixar material (.zip) {SETA_BAIXO}
+                </a>
               </div>
-            ))}
-          </div>
 
-          {enviado === "1" && (
-            <p className="aviso aviso-ok">
-              Resultado do {g.nome} — {g.papel} recebido.
+              <div>
+                <h2>Converse com a IA</h2>
+                <ol className="regras">
+                  {PASSOS.map((passo) => (
+                    <li key={passo}>{passo}</li>
+                  ))}
+                </ol>
+                <ul className="dicas-guia">
+                  {DICAS_PROMPT.map((dica) => (
+                    <li key={dica}>{dica}</li>
+                  ))}
+                </ul>
+                <p className="meta">O prompt é de vocês — não existe roteiro pronto.</p>
+              </div>
+
+              <div>
+                <h2>Decidam e enviem</h2>
+                <p>
+                  Escolham um dos três candidatos e digam por quê. Se concluírem que nenhum
+                  deve ser contratado agora, expliquem o encaminhamento.
+                </p>
+                <div className="tabela">
+                  <div className="th cols-docs">
+                    <span>Campo</span>
+                    <span>O que preencher</span>
+                  </div>
+                  {ENTREGA.map((item) => (
+                    <div className="tr cols-docs" key={item.campo}>
+                      <span className="label">{item.campo}</span>
+                      <span>{item.instrucao}</span>
+                    </div>
+                  ))}
+                </div>
+                <ol className="regras">
+                  {REGRAS_GUIA.map((regra) => (
+                    <li key={regra}>{regra}</li>
+                  ))}
+                </ol>
+                <p><strong>Tempo: {TEMPO}.</strong></p>
+                <a href="#resultado" className="aponta-lado">
+                  Preencham o formulário
+                  <span className="so-desktop"> ao lado</span>
+                  <span className="so-mobile"> abaixo</span>
+                  {SETA_DIREITA}
+                </a>
+              </div>
+            </AssistentePassos>
+            <p className="meta">
+              Travou? Chame um facilitador — ele não dá a resposta; faz a pergunta.
             </p>
-          )}
-          {erro === "campos" && (
-            <p className="aviso aviso-erro">Preencha todos os campos — inclusive o prompt.</p>
-          )}
-          {erro === "envio" && (
-            <p className="aviso aviso-erro">Não foi possível gravar. Tente de novo.</p>
-          )}
+          </section>
 
-          <div className="bloco-envio">
-            <form action={enviarResultado} className="form-envio">
-              <input type="hidden" name="grupo" value={numero} />
-              <input type="hidden" name="origem" value="grupo" />
+          <aside className="coluna-lateral coluna-fixa" id="resultado">
+            <div className="bloco-envio">
+              <div className="secao-cabeca">
+                <h2>O que entregar</h2>
+                <span className="meta">Reenviou? Vale o mais recente.</span>
+              </div>
+
+              {enviado === "1" && (
+                <p className="aviso aviso-ok">
+                  Resultado do {g.nome} — {g.papel} recebido.
+                </p>
+              )}
+              {erro === "campos" && (
+                <p className="aviso aviso-erro">Preencha todos os campos — inclusive o prompt.</p>
+              )}
+              {erro === "envio" && (
+                <p className="aviso aviso-erro">Não foi possível gravar. Tente de novo.</p>
+              )}
+
+              <form action={enviarResultado} className="form-envio">
+                <input type="hidden" name="grupo" value={numero} />
+                <input type="hidden" name="origem" value="grupo" />
 
               <div className="campo campo-cheio">
                 <label>Candidato escolhido</label>
@@ -226,24 +257,10 @@ export default async function PaginaGrupo({
                 </button>
                 <span className="nota">Todos os campos apontam para os seus documentos.</span>
               </div>
-            </form>
-          </div>
-        </section>
-
-        <section className="secao">
-          <h2>Regras e tempo</h2>
-          <ol className="regras">
-            {REGRAS_GUIA.map((regra) => (
-              <li key={regra}>{regra}</li>
-            ))}
-          </ol>
-          <p>
-            <strong>Tempo: {TEMPO}.</strong>
-          </p>
-          <p className="meta">
-            Travou? Chame um facilitador — ele não dá a resposta; faz a pergunta.
-          </p>
-        </section>
+              </form>
+            </div>
+          </aside>
+        </div>
       </main>
 
       <footer className="pd-rule rodape">
