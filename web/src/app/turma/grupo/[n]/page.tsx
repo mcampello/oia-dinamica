@@ -80,8 +80,8 @@ export default async function PaginaGrupo({
         </Link>
       </header>
 
-      <main className="miolo miolo-amplo">
-        <div className="duas-colunas sobe">
+      <main className="miolo">
+        <div className="sobe">
           <section className="coluna-passos">
             <span className="pd-seal">
               {g.nome} — {g.papel}
@@ -169,12 +169,10 @@ export default async function PaginaGrupo({
                   ))}
                 </ol>
                 <p><strong>Tempo: {TEMPO}.</strong></p>
-                <a href="#resultado" className="aponta-lado">
+                <button type="button" className="aponta-lado aponta-botao" popoverTarget="resultado">
                   Preencham o formulário
-                  <span className="so-desktop"> ao lado</span>
-                  <span className="so-mobile"> abaixo</span>
                   {SETA_DIREITA}
-                </a>
+                </button>
               </div>
             </AssistentePassos>
             <p className="meta">
@@ -182,21 +180,12 @@ export default async function PaginaGrupo({
             </p>
           </section>
 
-          <aside className="coluna-lateral coluna-fixa" id="resultado">
-            <div className="bloco-envio">
-              <div className="secao-cabeca">
-                <h2>O que entregar</h2>
-                <span className="meta">Reenviou? Vale o mais recente.</span>
-              </div>
-
-              <FormularioResultado
-                grupo={numero}
-                envioAtual={envioAtual}
-                enviosAbertos={turma.envios_abertos}
-              />
-            </div>
-          </aside>
         </div>
+        <FormularioResultado
+          grupo={numero}
+          envioAtual={envioAtual}
+          enviosAbertos={turma.envios_abertos}
+        />
       </main>
 
       <footer className="pd-rule rodape">
